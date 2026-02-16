@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComptaFacile — Comptabilité gratuite pour entrepreneurs</title>
+<meta name="description" content="Outil de comptabilité gratuit pour micro-entreprise, SARL, SAS, SASU, EI, EURL.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:#0a0f1c;color:#e2e8f0;overflow-x:hidden}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 24px;background:radial-gradient(ellipse at 50% 0%,rgba(59,130,246,.12) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(139,92,246,.08) 0%,transparent 40%),#0a0f1c;position:relative}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 120px,rgba(255,255,255,.008) 120px,rgba(255,255,255,.008) 121px),repeating-linear-gradient(0deg,transparent,transparent 120px,rgba(255,255,255,.008) 120px,rgba(255,255,255,.008) 121px)}
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);padding:8px 20px;border-radius:40px;font-size:13px;color:#3b82f6;font-weight:600;margin-bottom:32px;position:relative;animation:fd .6s .1s both}
+.pill::before{content:'';width:7px;height:7px;border-radius:50%;background:#10b981;animation:pls 2s infinite}
+@keyframes pls{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:clamp(36px,6vw,72px);font-weight:900;line-height:1.05;letter-spacing:-2px;margin-bottom:22px;animation:fd .6s .2s both;position:relative}
+.hero h1 span{background:linear-gradient(135deg,#3b82f6,#8b5cf6,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:clamp(15px,2vw,19px);color:#94a3b8;max-width:580px;line-height:1.6;margin-bottom:40px;animation:fd .6s .3s both;position:relative}
+.cta{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;padding:18px 40px;border-radius:14px;font-size:18px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .3s;box-shadow:0 8px 32px rgba(59,130,246,.3);animation:fd .6s .4s both;position:relative}
+.cta:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(59,130,246,.4)}
+@keyframes fd{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.sec{padding:80px 24px;max-width:1100px;margin:0 auto}
+.sec h2{font-size:30px;font-weight:800;text-align:center;margin-bottom:10px;letter-spacing:-1px}
+.sec>p{text-align:center;color:#94a3b8;margin-bottom:36px;font-size:15px}
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.feat{background:#1e2a3a;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:28px 24px;transition:all .3s}
+.feat:hover{border-color:rgba(59,130,246,.2);transform:translateY(-4px)}
+.feat .ic{font-size:30px;margin-bottom:10px}
+.feat .ti{font-size:15px;font-weight:700;margin-bottom:6px}
+.feat .de{font-size:13px;color:#94a3b8;line-height:1.5}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.how-s{text-align:center;padding:20px}
+.how-n{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;margin:0 auto 14px}
+.how-t{font-weight:700;font-size:15px;margin-bottom:5px}
+.how-d{font-size:13px;color:#94a3b8;line-height:1.5}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.sc{background:#1e2a3a;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px;text-align:center;transition:all .3s}
+.sc:hover{border-color:#3b82f6}
+.sc .em{font-size:22px;margin-bottom:3px}
+.sc .nm{font-weight:700;font-size:13px}
+.sc .ds{font-size:10px;color:#94a3b8;margin-top:2px}
+.ctab{text-align:center;padding:50px 24px 90px}
+.ctab .sub{margin-top:14px;font-size:13px;color:#94a3b8}
+.footer{text-align:center;padding:24px;border-top:1px solid rgba(255,255,255,.06);font-size:11px;color:#64748b}
+
+/* WIZARD */
+.wiz{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 24px;background:radial-gradient(ellipse at 50% 0%,rgba(59,130,246,.08) 0%,transparent 60%),#0a0f1c}
+.wc{background:#111827;border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:40px;max-width:640px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.wprog{display:flex;gap:6px;margin-bottom:24px}
+.wdot{height:4px;flex:1;border-radius:4px;background:rgba(255,255,255,.07)}
+.wdot.done{background:#3b82f6}
+.wdot.cur{background:linear-gradient(90deg,#3b82f6,#8b5cf6)}
+.wlbl{font-size:12px;color:#3b82f6;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.wtit{font-size:24px;font-weight:800;margin-bottom:22px}
+.wopts{display:grid;gap:8px;margin-bottom:24px;max-height:400px;overflow-y:auto}
+.wopt{background:#1a2236;border:2px solid transparent;border-radius:14px;padding:16px 18px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px}
+.wopt:hover{border-color:rgba(59,130,246,.3)}
+.wopt.sel{border-color:#3b82f6;background:rgba(59,130,246,.08)}
+.wopt .em{font-size:24px;flex-shrink:0}
+.wopt .ti{font-weight:700;font-size:14px}
+.wopt .di{font-size:11px;color:#94a3b8}
+.winp{width:100%;padding:14px 18px;border-radius:12px;border:2px solid rgba(255,255,255,.08);background:#1a2236;color:#fff;font-size:16px;font-family:inherit;outline:none;margin-bottom:20px}
+.winp:focus{border-color:#3b82f6}
+.wacts{display:flex;gap:10px;justify-content:space-between}
+.wbtn{padding:14px 28px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;border:none;transition:all .2s}
+.wbp{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;box-shadow:0 4px 20px rgba(59,130,246,.3)}
+.wbp:hover{transform:translateY(-2px)}
+.wbs{background:#1a2236;color:#e2e8f0}
+
+/* DOWNLOAD PAGE */
+.dlp{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 24px;background:radial-gradient(ellipse at 50% 30%,rgba(16,185,129,.1) 0%,transparent 60%),#0a0f1c}
+.dlc{background:#111827;border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:44px 36px;max-width:540px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:fd .5s both}
+.dlbtn{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:18px 36px;border-radius:14px;font-size:18px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .3s;box-shadow:0 8px 32px rgba(16,185,129,.3);margin-bottom:20px;width:100%;justify-content:center}
+.dlbtn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(16,185,129,.4)}
+.dlbtn:disabled{opacity:.5;cursor:wait;transform:none}
+.dlinfo{display:grid;gap:6px;text-align:left;margin-bottom:24px}
+.dlrow{display:flex;justify-content:space-between;padding:9px 14px;background:#1a2236;border-radius:10px;font-size:13px}
+.dlrow span:first-child{color:#94a3b8}
+.dlrow span:last-child{font-weight:700}
+.dlback{background:none;border:1px solid rgba(255,255,255,.1);color:#94a3b8;padding:10px 24px;border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit;font-weight:600;transition:all .2s}
+.dlback:hover{border-color:#3b82f6;color:#3b82f6}
+.lbar{width:100%;height:6px;background:#1a2236;border-radius:6px;overflow:hidden;margin-bottom:16px}
+.lfill{height:100%;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#10b981);border-radius:6px;animation:ld 2s ease-in-out}
+@keyframes ld{from{width:0}to{width:100%}}
+.dltip{background:#1a2236;border-radius:12px;padding:14px 18px;margin-top:20px;text-align:left;font-size:12px;color:#94a3b8;line-height:1.6}
+.dltip strong{color:#e2e8f0}
+.dlerr{background:rgba(239,68,68,.15);color:#ef4444;padding:10px 16px;border-radius:10px;font-size:12px;margin-bottom:16px;font-weight:600}
+
+@media(max-width:768px){
+  .feats,.how{grid-template-columns:1fr}
+  .wc,.dlc{padding:28px 20px}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel">
+const {useState, useEffect} = React;
+
+const STATUTS = {
+  micro_service:{label:"Micro-entreprise (Services/Artisan)",short:"Micro (Services)",charges:.221,icon:"🧑‍💻",desc:"BIC/BNC • URSSAF 22.1%"},
+  micro_commerce:{label:"Micro-entreprise (Achat/Revente)",short:"Micro (Commerce)",charges:.123,icon:"🛒",desc:"BIC • URSSAF 12.3%"},
+  micro_liberal:{label:"Micro-entreprise (Libéral)",short:"Micro (Libéral)",charges:.211,icon:"⚖️",desc:"BNC • URSSAF 21.1%"},
+  ei:{label:"Entreprise Individuelle (EI)",short:"EI",charges:.45,icon:"👤",desc:"IR • Charges ~45%"},
+  eurl_ir:{label:"EURL à l'IR",short:"EURL (IR)",charges:.45,icon:"🏢",desc:"IR • TNS ~45%"},
+  eurl_is:{label:"EURL à l'IS",short:"EURL (IS)",charges:.45,icon:"🏢",desc:"IS 15/25% • TNS ~45%"},
+  sarl:{label:"SARL",short:"SARL",charges:.45,icon:"🏛",desc:"IS 15/25% • TNS ~45%"},
+  sasu:{label:"SASU",short:"SASU",charges:.78,icon:"🚀",desc:"IS 15/25% • Assimilé salarié ~78%"},
+  sas:{label:"SAS",short:"SAS",charges:.78,icon:"🏗",desc:"IS 15/25% • Assimilé salarié ~78%"},
+};
+
+const SECTEURS = {
+  btp:{label:"BTP / Construction",icon:"🔨",cats:["Matériaux","Outillage","Location engins","Sous-traitance","EPI","Transport","Assurance","Carburant","Téléphone","Autre"]},
+  transport:{label:"Transport / Logistique",icon:"🚛",cats:["Carburant","Péages","Entretien","Assurance","Location","Stationnement","Téléphone","Repas","Autre"]},
+  commerce:{label:"Commerce / Retail",icon:"🏪",cats:["Stock","Emballages","Port","Loyer","Publicité","Assurance","Téléphone","Logiciel","Autre"]},
+  service:{label:"Services / Conseil",icon:"💼",cats:["Déplacement","Logiciel","Téléphone","Formation","Fournitures","Assurance","Repas","Sous-traitance","Autre"]},
+  tech:{label:"Informatique / Tech",icon:"💻",cats:["Cloud","Logiciels","Matériel","Coworking","Formation","Téléphone","Sous-traitance","Publicité","Autre"]},
+  restauration:{label:"Restauration",icon:"🍽",cats:["Matières premières","Entretien","Équipement","Loyer","Énergie","Consommables","Assurance","Publicité","Autre"]},
+  sante:{label:"Santé / Bien-être",icon:"⚕️",cats:["Matériel","Consommables","Loyer","Assurance","Formation","Logiciel","Téléphone","Autre"]},
+  artisanat:{label:"Artisanat / Création",icon:"🎨",cats:["Matières premières","Outillage","Emballages","Port","Atelier","Salons","Assurance","Autre"]},
+  immobilier:{label:"Immobilier",icon:"🏠",cats:["Travaux","Assurance","Taxe foncière","Gestion","Copropriété","Intérêts","Diagnostics","Autre"]},
+  autre:{label:"Autre activité",icon:"📦",cats:["Fournitures","Déplacement","Logiciel","Téléphone","Assurance","Formation","Sous-traitance","Repas","Loyer","Autre"]},
+};
+
+const fmtEUR = n => new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"}).format(n);
+
+function Landing({onStart}) {
+  return(<div>
+    <div className="hero">
+      <div className="pill">100% gratuit — aucune inscription</div>
+      <h1>Votre outil de compta<br/><span>sur-mesure</span></h1>
+      <p>Configurez votre statut juridique et secteur d'activité. Téléchargez votre application de comptabilité personnalisée, gratuite et hors-ligne.</p>
+      <button className="cta" onClick={onStart}>Créer mon outil gratuit →</button>
+    </div>
+    <div className="sec">
+      <h2>Comment ça marche</h2>
+      <p>3 étapes, 2 minutes, 0 €</p>
+      <div className="how">
+        <div className="how-s"><div className="how-n">1</div><div className="how-t">Configurez</div><div className="how-d">Statut juridique et secteur d'activité</div></div>
+        <div className="how-s"><div className="how-n">2</div><div className="how-t">Téléchargez</div><div className="how-d">Un fichier unique, prêt à l'emploi</div></div>
+        <div className="how-s"><div className="how-n">3</div><div className="how-t">Utilisez</div><div className="how-d">Ouvrez-le dans votre navigateur !</div></div>
+      </div>
+    </div>
+    <div className="sec">
+      <h2>Fonctionnalités</h2>
+      <p>Un outil complet adapté à votre activité</p>
+      <div className="feats">
+        <div className="feat"><div className="ic">📄</div><div className="ti">Factures</div><div className="de">Multi-lignes, TVA auto, délais en jours ouvrés, alertes retard.</div></div>
+        <div className="feat"><div className="ic">💸</div><div className="ti">Dépenses</div><div className="de">Catégories adaptées à votre métier, répartition visuelle.</div></div>
+        <div className="feat"><div className="ic">📊</div><div className="ti">Dashboard</div><div className="de">CA, charges sociales, bénéfice net, graphique mensuel.</div></div>
+        <div className="feat"><div className="ic">🏦</div><div className="ti">Trésorerie</div><div className="de">Flux mensuel, créances, résultat net détaillé.</div></div>
+        <div className="feat"><div className="ic">⚡</div><div className="ti">TVA & Charges</div><div className="de">Seuil TVA, IS 15/25%, URSSAF ou TNS selon statut.</div></div>
+        <div className="feat"><div className="ic">💾</div><div className="ti">Sauvegarde</div><div className="de">Export/import JSON. Vos données restent chez vous.</div></div>
+      </div>
+    </div>
+    <div className="sec">
+      <h2>Tous les statuts supportés</h2>
+      <div className="sgrid" style={{marginTop:20}}>{Object.entries(STATUTS).map(([k,v])=>(<div key={k} className="sc"><div className="em">{v.icon}</div><div className="nm">{v.short}</div><div className="ds">Charges: {Math.round(v.charges*100)}%</div></div>))}</div>
+    </div>
+    <div className="ctab">
+      <button className="cta" onClick={onStart}>Créer mon outil maintenant →</button>
+      <div className="sub">Gratuit • Sans inscription • Fonctionne hors ligne</div>
+    </div>
+    <div className="footer">ComptaFacile — Outil gratuit pour entrepreneurs français</div>
+  </div>);
+}
+
+function Wizard({onDone}) {
+  const [step,setStep] = useState(0);
+  const [cfg,setCfg] = useState({name:"", statut:"", secteur:""});
+  const ok = step===0 ? cfg.name.trim()!=="" : step===1 ? cfg.statut!=="" : cfg.secteur!=="";
+  const next = () => { if(step<2) setStep(step+1); else onDone(cfg); };
+
+  return(<div className="wiz"><div className="wc">
+    <div className="wprog">{[0,1,2].map(i=>(<div key={i} className={`wdot ${i<step?"done":i===step?"cur":""}`}/>))}</div>
+    <div className="wlbl">Étape {step+1}/3</div>
+    <div className="wtit">{["Nom de votre entreprise","Votre statut juridique","Votre secteur d'activité"][step]}</div>
+    {step===0 && <input className="winp" placeholder="Ex: Martin & Co, Mon Entreprise..." value={cfg.name} onChange={e=>setCfg({...cfg,name:e.target.value})} autoFocus onKeyDown={e=>e.key==="Enter"&&ok&&next()}/>}
+    {step===1 && <div className="wopts">{Object.entries(STATUTS).map(([k,v])=>(<div key={k} className={`wopt ${cfg.statut===k?"sel":""}`} onClick={()=>setCfg({...cfg,statut:k})}><div className="em">{v.icon}</div><div><div className="ti">{v.label}</div><div className="di">{v.desc}</div></div></div>))}</div>}
+    {step===2 && <div className="wopts">{Object.entries(SECTEURS).map(([k,v])=>(<div key={k} className={`wopt ${cfg.secteur===k?"sel":""}`} onClick={()=>setCfg({...cfg,secteur:k})}><div className="em">{v.icon}</div><div><div className="ti">{v.label}</div><div className="di">{v.cats.slice(0,4).join(", ")}...</div></div></div>))}</div>}
+    <div className="wacts">
+      {step>0 ? <button className="wbtn wbs" onClick={()=>setStep(step-1)}>← Retour</button> : <div/>}
+      <button className="wbtn wbp" onClick={next} disabled={!ok} style={{opacity:ok?1:.5}}>{step===2?"Générer mon outil →":"Suivant →"}</button>
+    </div>
+  </div></div>);
+}
+
+function DownloadPage({cfg, onBack}) {
+  const [ready, setReady] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState(null);
+  const [template, setTemplate] = useState(null);
+  const S = STATUTS[cfg.statut];
+  const SEC = SECTEURS[cfg.secteur];
+
+  // Fetch app template on mount
+  useEffect(() => {
+    fetch("app.html")
+      .then(r => {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.text();
+      })
+      .then(html => {
+        setTemplate(html);
+        setReady(true);
+      })
+      .catch(err => {
+        setError("Impossible de charger le modèle. Vérifiez que app.html est dans le même dossier.");
+        setReady(true);
+      });
+  }, []);
+
+  const doDownload = () => {
+    if (!template) return;
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Inject config into template
+      const configStr = JSON.stringify(cfg);
+      const html = template.replace(
+        'var APP_CONFIG = null;',
+        'var APP_CONFIG = ' + configStr + ';'
+      );
+
+      // Create and trigger download
+      const blob = new Blob([html], {type: "text/html;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+
+      // Method 1: Try standard download
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "comptabilite-" + cfg.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-+$/, "") + ".html";
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+
+      // Cleanup after delay
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 1000);
+
+      setDone(true);
+    } catch(e) {
+      setError("Erreur lors du téléchargement : " + e.message);
+    }
+    setLoading(false);
+  };
+
+  return(<div className="dlp"><div className="dlc">
+    {!ready ? (<div>
+      <div style={{fontSize:64,marginBottom:16}}>⚙️</div>
+      <h2 style={{fontSize:24,fontWeight:800,marginBottom:10}}>Préparation...</h2>
+      <div style={{color:"#94a3b8",fontSize:14,marginBottom:20}}>Configuration pour {S.label}</div>
+      <div className="lbar"><div className="lfill"/></div>
+    </div>) : (<div>
+      <div style={{fontSize:64,marginBottom:16}}>✅</div>
+      <h2 style={{fontSize:24,fontWeight:800,marginBottom:10}}>Votre outil est prêt !</h2>
+      <div style={{color:"#94a3b8",fontSize:14,marginBottom:24}}>Application personnalisée pour <strong style={{color:"#fff"}}>{cfg.name}</strong></div>
+
+      <div className="dlinfo">
+        <div className="dlrow"><span>Entreprise</span><span>{cfg.name}</span></div>
+        <div className="dlrow"><span>Statut</span><span>{S.label}</span></div>
+        <div className="dlrow"><span>Charges</span><span>{Math.round(S.charges*100)}%</span></div>
+        <div className="dlrow"><span>Secteur</span><span>{SEC.label}</span></div>
+        <div className="dlrow"><span>Catégories</span><span>{SEC.cats.length}</span></div>
+      </div>
+
+      {error && <div className="dlerr">{error}</div>}
+      {done && <div style={{color:"#10b981",fontSize:14,fontWeight:600,marginBottom:16}}>✅ Fichier téléchargé avec succès !</div>}
+
+      <button className="dlbtn" onClick={doDownload} disabled={loading || !template}>
+        {loading ? "⏳ En cours..." : done ? "⬇️ Re-télécharger" : "⬇️ Télécharger mon application"}
+      </button>
+
+      <div className="dltip">
+        <strong>📱 Sur iPhone :</strong> Le fichier se retrouve dans l'app Fichiers. Ouvrez-le avec Safari, puis : bouton partage ⬆️ → "Sur l'écran d'accueil"<br/><br/>
+        <strong>🤖 Sur Android :</strong> Ouvrez le fichier téléchargé avec Chrome.<br/><br/>
+        <strong>💻 Sur PC/Mac :</strong> Double-cliquez le fichier, il s'ouvre dans votre navigateur.
+      </div>
+
+      <div style={{marginTop:20}}>
+        <button className="dlback" onClick={onBack}>← Créer un autre outil</button>
+      </div>
+    </div>)}
+  </div></div>);
+}
+
+function App() {
+  const [pg, setPg] = useState("land");
+  const [cfg, setCfg] = useState(null);
+
+  if (pg === "land") return <Landing onStart={() => setPg("wiz")}/>;
+  if (pg === "wiz") return <Wizard onDone={c => { setCfg(c); setPg("dl"); }}/>;
+  if (pg === "dl" && cfg) return <DownloadPage cfg={cfg} onBack={() => { setCfg(null); setPg("wiz"); }}/>;
+  return null;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
