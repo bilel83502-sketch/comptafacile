@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComptaFacile — Comptabilité gratuite pour entrepreneurs</title>
+<meta name="description" content="Outil de comptabilité gratuit et personnalisé pour micro-entreprise, SARL, SAS, SASU, EI, EURL. Factures, dépenses, TVA, charges sociales.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:#0a0f1c;color:#e2e8f0;overflow-x:hidden}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 24px;
+background:radial-gradient(ellipse at 50% 0%,rgba(59,130,246,.12) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(139,92,246,.08) 0%,transparent 40%),#0a0f1c;position:relative}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 120px,rgba(255,255,255,.008) 120px,rgba(255,255,255,.008) 121px),repeating-linear-gradient(0deg,transparent,transparent 120px,rgba(255,255,255,.008) 120px,rgba(255,255,255,.008) 121px)}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);padding:8px 20px;border-radius:40px;font-size:13px;color:#3b82f6;font-weight:600;margin-bottom:32px;position:relative;animation:fd .6s .1s both}
+.hero-pill::before{content:'';width:7px;height:7px;border-radius:50%;background:#10b981;animation:pls 2s infinite}
+@keyframes pls{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:clamp(38px,6vw,74px);font-weight:900;line-height:1.05;letter-spacing:-2.5px;margin-bottom:22px;animation:fd .6s .2s both;position:relative}
+.hero h1 span{background:linear-gradient(135deg,#3b82f6,#8b5cf6,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:clamp(16px,2vw,20px);color:#94a3b8;max-width:600px;line-height:1.6;margin-bottom:40px;animation:fd .6s .3s both;position:relative}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;padding:18px 40px;border-radius:14px;font-size:18px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .3s;box-shadow:0 8px 32px rgba(59,130,246,.3);animation:fd .6s .4s both;position:relative}
+.hero-cta:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(59,130,246,.4)}
+@keyframes fd{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+.section{padding:80px 24px;max-width:1100px;margin:0 auto}
+.section h2{font-size:32px;font-weight:800;text-align:center;margin-bottom:12px;letter-spacing:-1px}
+.section>p{text-align:center;color:#94a3b8;margin-bottom:40px;font-size:16px}
+
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feat{background:#1e2a3a;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:32px 28px;transition:all .3s}
+.feat:hover{border-color:rgba(59,130,246,.2);transform:translateY(-4px)}
+.feat-i{font-size:34px;margin-bottom:14px}
+.feat-t{font-size:17px;font-weight:700;margin-bottom:8px}
+.feat-d{font-size:14px;color:#94a3b8;line-height:1.6}
+
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:20px}
+.how-step{text-align:center;padding:24px}
+.how-num{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;margin:0 auto 16px}
+.how-t{font-weight:700;font-size:16px;margin-bottom:6px}
+.how-d{font-size:13px;color:#94a3b8;line-height:1.5}
+
+.statuts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:10px}
+.s-chip{background:#1e2a3a;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:20px;text-align:center;transition:all .3s}
+.s-chip:hover{border-color:#3b82f6;background:rgba(59,130,246,.04)}
+.s-chip .em{font-size:26px;margin-bottom:6px}
+.s-chip .nm{font-weight:700;font-size:14px}
+.s-chip .ds{font-size:11px;color:#94a3b8;margin-top:3px}
+
+.cta-bottom{text-align:center;padding:60px 24px 100px}
+.cta-sub{margin-top:16px;font-size:13px;color:#94a3b8}
+
+.footer{text-align:center;padding:30px;border-top:1px solid rgba(255,255,255,.06);font-size:12px;color:#64748b}
+
+/* WIZARD */
+.wiz{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 24px;background:radial-gradient(ellipse at 50% 0%,rgba(59,130,246,.08) 0%,transparent 60%),#0a0f1c}
+.wiz-card{background:#111827;border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:40px;max-width:640px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.wiz-prog{display:flex;gap:6px;margin-bottom:24px}
+.wiz-dot{height:4px;flex:1;border-radius:4px;background:rgba(255,255,255,.07)}
+.wiz-dot.done{background:#3b82f6}
+.wiz-dot.cur{background:linear-gradient(90deg,#3b82f6,#8b5cf6)}
+.wiz-step{font-size:12px;color:#3b82f6;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.wiz-title{font-size:24px;font-weight:800;margin-bottom:22px;letter-spacing:-.5px}
+.wiz-opts{display:grid;gap:8px;margin-bottom:24px;max-height:400px;overflow-y:auto;padding-right:4px}
+.wiz-opt{background:#1a2236;border:2px solid transparent;border-radius:14px;padding:16px 18px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px}
+.wiz-opt:hover{border-color:rgba(59,130,246,.3);background:rgba(59,130,246,.04)}
+.wiz-opt.sel{border-color:#3b82f6;background:rgba(59,130,246,.08)}
+.wiz-opt .em{font-size:26px;flex-shrink:0}
+.wiz-opt .ti{font-weight:700;font-size:14px;margin-bottom:1px}
+.wiz-opt .di{font-size:11px;color:#94a3b8}
+.wiz-input{width:100%;padding:14px 18px;border-radius:12px;border:2px solid rgba(255,255,255,.08);background:#1a2236;color:#fff;font-size:16px;font-family:inherit;outline:none;margin-bottom:20px}
+.wiz-input:focus{border-color:#3b82f6}
+.wiz-actions{display:flex;gap:10px;justify-content:space-between}
+.wiz-btn{padding:14px 28px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;border:none;transition:all .2s}
+.wiz-btn-p{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;box-shadow:0 4px 20px rgba(59,130,246,.3)}
+.wiz-btn-p:hover{transform:translateY(-2px)}
+.wiz-btn-s{background:#1a2236;color:#e2e8f0}
+
+/* DOWNLOAD PAGE */
+.dl-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 24px;background:radial-gradient(ellipse at 50% 30%,rgba(16,185,129,.1) 0%,transparent 60%),#0a0f1c}
+.dl-card{background:#111827;border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:50px 40px;max-width:560px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:fd .5s both}
+.dl-icon{font-size:64px;margin-bottom:20px}
+.dl-title{font-size:28px;font-weight:800;margin-bottom:10px}
+.dl-sub{color:#94a3b8;font-size:15px;margin-bottom:30px;line-height:1.5}
+.dl-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:18px 40px;border-radius:14px;font-size:18px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:all .3s;box-shadow:0 8px 32px rgba(16,185,129,.3);margin-bottom:24px;width:100%;justify-content:center}
+.dl-btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(16,185,129,.4)}
+.dl-info{display:grid;gap:8px;text-align:left;margin-bottom:24px}
+.dl-info-row{display:flex;justify-content:space-between;padding:10px 14px;background:#1a2236;border-radius:10px;font-size:13px}
+.dl-info-row span:first-child{color:#94a3b8}
+.dl-info-row span:last-child{font-weight:700}
+.dl-restart{background:none;border:1px solid rgba(255,255,255,.1);color:#94a3b8;padding:10px 24px;border-radius:10px;font-size:13px;cursor:pointer;font-family:inherit;transition:all .2s;font-weight:600}
+.dl-restart:hover{border-color:#3b82f6;color:#3b82f6}
+.dl-done{color:#10b981;font-size:14px;font-weight:600;margin-bottom:20px;animation:fd .3s both}
+
+.loading-bar{width:100%;height:6px;background:#1a2236;border-radius:6px;overflow:hidden;margin-bottom:20px}
+.loading-fill{height:100%;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#10b981);border-radius:6px;animation:load 2s ease-in-out}
+@keyframes load{from{width:0}to{width:100%}}
+
+@media(max-width:768px){
+  .features,.how{grid-template-columns:1fr}
+  .hero h1{letter-spacing:-1px}
+  .wiz-card,.dl-card{padding:28px 20px}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel">
+const {useState,useEffect}=React;
+
+const STATUTS={
+  micro_service:{label:"Micro-entreprise (Services/Artisan)",short:"Micro (Services)",charges:.221,tvaSeuil:36800,tva:.20,hasIS:false,icon:"🧑‍💻",desc:"BIC/BNC • URSSAF 22.1%"},
+  micro_commerce:{label:"Micro-entreprise (Achat/Revente)",short:"Micro (Commerce)",charges:.123,tvaSeuil:91900,tva:.20,hasIS:false,icon:"🛒",desc:"BIC • URSSAF 12.3%"},
+  micro_liberal:{label:"Micro-entreprise (Libéral)",short:"Micro (Libéral)",charges:.211,tvaSeuil:36800,tva:.20,hasIS:false,icon:"⚖️",desc:"BNC • URSSAF 21.1%"},
+  ei:{label:"Entreprise Individuelle (EI)",short:"EI",charges:.45,tvaSeuil:36800,tva:.20,hasIS:false,icon:"👤",desc:"IR • Charges ~45%"},
+  eurl_ir:{label:"EURL à l'IR",short:"EURL (IR)",charges:.45,tvaSeuil:0,tva:.20,hasIS:false,icon:"🏢",desc:"IR • TNS ~45%"},
+  eurl_is:{label:"EURL à l'IS",short:"EURL (IS)",charges:.45,tvaSeuil:0,tva:.20,hasIS:true,is1:.15,isSeuil:42500,is2:.25,icon:"🏢",desc:"IS 15/25% • TNS ~45%"},
+  sarl:{label:"SARL",short:"SARL",charges:.45,tvaSeuil:0,tva:.20,hasIS:true,is1:.15,isSeuil:42500,is2:.25,icon:"🏛",desc:"IS 15/25% • TNS ~45%"},
+  sasu:{label:"SASU",short:"SASU",charges:.78,tvaSeuil:0,tva:.20,hasIS:true,is1:.15,isSeuil:42500,is2:.25,icon:"🚀",desc:"IS 15/25% • Assimilé salarié ~78%"},
+  sas:{label:"SAS",short:"SAS",charges:.78,tvaSeuil:0,tva:.20,hasIS:true,is1:.15,isSeuil:42500,is2:.25,icon:"🏗",desc:"IS 15/25% • Assimilé salarié ~78%"},
+};
+
+const SECTEURS={
+  btp:{label:"BTP / Construction",icon:"🔨",cats:["Matériaux","Outillage","Location engins","Sous-traitance","EPI & Sécurité","Transport","Assurance décennale","Carburant","Téléphone","Autre"]},
+  transport:{label:"Transport / Logistique",icon:"🚛",cats:["Carburant","Péages","Entretien véhicule","Assurance véhicule","Location véhicule","Stationnement","Téléphone","Repas route","Autre"]},
+  commerce:{label:"Commerce / Retail",icon:"🏪",cats:["Stock & Marchandises","Emballages","Frais de port","Local & Loyer","Publicité","Assurance","Téléphone","Logiciel caisse","Autre"]},
+  service:{label:"Services / Conseil",icon:"💼",cats:["Déplacement","Logiciel & Abonnement","Téléphone & Internet","Formation","Fournitures bureau","Assurance RC Pro","Repas","Sous-traitance","Autre"]},
+  tech:{label:"Informatique / Tech",icon:"💻",cats:["Hébergement & Cloud","Logiciels & Licences","Matériel informatique","Coworking","Formation","Téléphone & Internet","Sous-traitance","Publicité","Autre"]},
+  restauration:{label:"Restauration / Hôtellerie",icon:"🍽",cats:["Matières premières","Produits entretien","Équipement cuisine","Loyer","Énergie","Consommables","Assurance","Publicité","Autre"]},
+  sante:{label:"Santé / Bien-être",icon:"⚕️",cats:["Matériel médical","Consommables","Local & Loyer","Assurance RC Pro","Formation continue","Logiciel cabinet","Téléphone","Autre"]},
+  artisanat:{label:"Artisanat / Création",icon:"🎨",cats:["Matières premières","Outillage","Emballages","Frais de port","Atelier & Local","Marchés & Salons","Assurance","Autre"]},
+  immobilier:{label:"Immobilier",icon:"🏠",cats:["Travaux","Assurance PNO","Taxe foncière","Frais de gestion","Charges copropriété","Intérêts emprunt","Diagnostics","Autre"]},
+  autre:{label:"Autre activité",icon:"📦",cats:["Fournitures","Déplacement","Logiciel","Téléphone & Internet","Assurance","Formation","Sous-traitance","Repas","Loyer","Autre"]},
+};
+
+// ═══ LANDING ═══
+function Landing({onStart}){
+  return(<div>
+    <div className="hero">
+      <div className="hero-pill">100% gratuit — aucune inscription</div>
+      <h1>Votre outil de compta<br/><span>sur-mesure</span></h1>
+      <p>Configurez votre statut juridique et votre secteur d'activité. On génère votre application de comptabilité personnalisée, prête à télécharger.</p>
+      <button className="hero-cta" onClick={onStart}>Créer mon outil gratuit →</button>
+    </div>
+
+    <div className="section">
+      <h2>Comment ça marche</h2>
+      <p>3 étapes, 2 minutes, 0 €</p>
+      <div className="how">
+        <div className="how-step"><div className="how-num">1</div><div className="how-t">Configurez</div><div className="how-d">Choisissez votre statut juridique et votre secteur d'activité</div></div>
+        <div className="how-step"><div className="how-num">2</div><div className="how-t">Téléchargez</div><div className="how-d">On génère votre application personnalisée en un seul fichier</div></div>
+        <div className="how-step"><div className="how-num">3</div><div className="how-t">Utilisez</div><div className="how-d">Ouvrez le fichier dans votre navigateur et gérez votre comptabilité</div></div>
+      </div>
+    </div>
+
+    <div className="section">
+      <h2>Tout ce dont vous avez besoin</h2>
+      <p>Un outil complet adapté à votre activité</p>
+      <div className="features">
+        <div className="feat"><div className="feat-i">📄</div><div className="feat-t">Factures</div><div className="feat-d">Créez et suivez vos factures. Multi-lignes, TVA automatique, délais de paiement en jours ouvrés, alertes retard.</div></div>
+        <div className="feat"><div className="feat-i">💸</div><div className="feat-t">Dépenses</div><div className="feat-d">Catégories adaptées à votre secteur. Répartition visuelle, suivi mensuel, total par catégorie.</div></div>
+        <div className="feat"><div className="feat-i">📊</div><div className="feat-t">Tableau de bord</div><div className="feat-d">CA facturé et encaissé, charges sociales, bénéfice net, graphique mensuel. Tout en un coup d'œil.</div></div>
+        <div className="feat"><div className="feat-i">🏦</div><div className="feat-t">Trésorerie</div><div className="feat-d">Flux de trésorerie mensuel, créances en cours, résultat net. Pilotez votre activité.</div></div>
+        <div className="feat"><div className="feat-i">⚡</div><div className="feat-t">TVA & Charges</div><div className="feat-d">Seuil TVA pour les micro, IS 15/25% pour les sociétés, URSSAF ou charges TNS selon votre statut.</div></div>
+        <div className="feat"><div className="feat-i">💾</div><div className="feat-t">Sauvegarde</div><div className="feat-d">Export/import JSON. Vos données restent chez vous. Aucun serveur, aucune inscription, aucun tracking.</div></div>
+      </div>
+    </div>
+
+    <div className="section">
+      <h2>Tous les statuts supportés</h2>
+      <p>Choisissez votre forme juridique, les calculs s'adaptent</p>
+      <div className="statuts-grid">{Object.entries(STATUTS).map(([k,v])=>(<div key={k} className="s-chip"><div className="em">{v.icon}</div><div className="nm">{v.short}</div><div className="ds">Charges: {Math.round(v.charges*100)}%{v.hasIS?" • IS":""}
+      </div></div>))}</div>
+    </div>
+
+    <div className="section" style={{paddingBottom:0}}>
+      <h2>10 secteurs d'activité</h2>
+      <p>Des catégories de dépenses adaptées à votre métier</p>
+      <div className="statuts-grid">{Object.entries(SECTEURS).map(([k,v])=>(<div key={k} className="s-chip"><div className="em">{v.icon}</div><div className="nm">{v.label}</div><div className="ds">{v.cats.length} catégories</div></div>))}</div>
+    </div>
+
+    <div className="cta-bottom">
+      <button className="hero-cta" onClick={onStart}>Créer mon outil maintenant →</button>
+      <div className="cta-sub">Gratuit • Sans inscription • Fonctionne hors ligne • Vos données restent chez vous</div>
+    </div>
+
+    <div className="footer">ComptaFacile — Outil gratuit de comptabilité pour entrepreneurs français</div>
+  </div>);
+}
+
+// ═══ WIZARD ═══
+function Wizard({onDone}){
+  const [step,setStep]=useState(0);
+  const [cfg,setCfg]=useState({name:"",statut:"",secteur:""});
+  const ok=step===0?cfg.name.trim()!=="":step===1?cfg.statut!=="":cfg.secteur!=="";
+  const next=()=>{if(step<2)setStep(step+1);else onDone(cfg);};
+  return(<div className="wiz"><div className="wiz-card">
+    <div className="wiz-prog">{[0,1,2].map(i=>(<div key={i} className={`wiz-dot ${i<step?"done":i===step?"cur":""}`}/>))}</div>
+    <div className="wiz-step">Étape {step+1}/3</div>
+    <div className="wiz-title">{["Nom de votre entreprise","Votre statut juridique","Votre secteur d'activité"][step]}</div>
+    {step===0&&<input className="wiz-input" placeholder="Ex: Martin & Co, AB DRIDI, Mon entreprise..." value={cfg.name} onChange={e=>setCfg({...cfg,name:e.target.value})} autoFocus onKeyDown={e=>e.key==="Enter"&&ok&&next()}/>}
+    {step===1&&<div className="wiz-opts">{Object.entries(STATUTS).map(([k,v])=>(<div key={k} className={`wiz-opt ${cfg.statut===k?"sel":""}`} onClick={()=>setCfg({...cfg,statut:k})}><div className="em">{v.icon}</div><div><div className="ti">{v.label}</div><div className="di">{v.desc}</div></div></div>))}</div>}
+    {step===2&&<div className="wiz-opts">{Object.entries(SECTEURS).map(([k,v])=>(<div key={k} className={`wiz-opt ${cfg.secteur===k?"sel":""}`} onClick={()=>setCfg({...cfg,secteur:k})}><div className="em">{v.icon}</div><div><div className="ti">{v.label}</div><div className="di">{v.cats.slice(0,4).join(", ")}...</div></div></div>))}</div>}
+    <div className="wiz-actions">{step>0?<button className="wiz-btn wiz-btn-s" onClick={()=>setStep(step-1)}>← Retour</button>:<div/>}<button className="wiz-btn wiz-btn-p" onClick={next} disabled={!ok} style={{opacity:ok?1:.5}}>{step===2?"Générer mon outil →":"Suivant →"}</button></div>
+  </div></div>);
+}
+
+// ═══ DOWNLOAD PAGE ═══
+function DownloadPage({cfg,onRestart}){
+  const [ready,setReady]=useState(false);
+  const [downloaded,setDownloaded]=useState(false);
+  const S=STATUTS[cfg.statut];
+  const SEC=SECTEURS[cfg.secteur];
+
+  useEffect(()=>{const t=setTimeout(()=>setReady(true),2200);return()=>clearTimeout(t);},[]);
+
+  const doDownload=()=>{
+    // Fetch the app template and inject config
+    const html=generateApp(cfg,S,SEC);
+    const blob=new Blob([html],{type:"text/html"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download=`comptabilite-${cfg.name.toLowerCase().replace(/[^a-z0-9]/g,"-").replace(/-+/g,"-")}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setDownloaded(true);
+  };
+
+  return(<div className="dl-page"><div className="dl-card">
+    {!ready ? (<div>
+      <div className="dl-icon">⚙️</div>
+      <div className="dl-title">Génération en cours...</div>
+      <div className="dl-sub">On configure votre outil avec les paramètres de {S.label} pour le secteur {SEC.label}</div>
+      <div className="loading-bar"><div className="loading-fill"/></div>
+    </div>) : (<div>
+      <div className="dl-icon">✅</div>
+      <div className="dl-title">Votre outil est prêt !</div>
+      <div className="dl-sub">Application personnalisée pour <strong>{cfg.name}</strong></div>
+      <div className="dl-info">
+        <div className="dl-info-row"><span>Entreprise</span><span>{cfg.name}</span></div>
+        <div className="dl-info-row"><span>Statut</span><span>{S.label}</span></div>
+        <div className="dl-info-row"><span>Charges sociales</span><span>{Math.round(S.charges*100)}%</span></div>
+        <div className="dl-info-row"><span>Secteur</span><span>{SEC.label}</span></div>
+        <div className="dl-info-row"><span>Catégories dépenses</span><span>{SEC.cats.length} catégories</span></div>
+        {S.tvaSeuil>0&&<div className="dl-info-row"><span>Seuil TVA</span><span>{new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"}).format(S.tvaSeuil)}</span></div>}
+        {S.hasIS&&<div className="dl-info-row"><span>Impôt sur les sociétés</span><span>15% puis 25%</span></div>}
+      </div>
+      {downloaded&&<div className="dl-done">✅ Fichier téléchargé ! Ouvrez-le avec Chrome, Firefox ou Safari.</div>}
+      <button className="dl-btn" onClick={doDownload}>{downloaded?"⬇️ Re-télécharger":"⬇️ Télécharger mon application"}</button>
+      {!downloaded&&<div style={{fontSize:12,color:"#64748b",marginBottom:20}}>Un fichier HTML unique — ouvrez-le dans votre navigateur</div>}
+      <button className="dl-restart" onClick={onRestart}>← Créer un autre outil</button>
+    </div>)}
+  </div></div>);
+}
+
+// ═══ APP GENERATOR ═══
+function generateApp(cfg,S,SEC){
+  const chLabel=cfg.statut.startsWith("micro")?"URSSAF":(cfg.statut==="sasu"||cfg.statut==="sas"?"Charges (assimilé salarié)":"Charges sociales (TNS)");
+  const initials=cfg.name.slice(0,2).toUpperCase();
+  const cats=JSON.stringify(SEC.cats);
+  
+return `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>${cfg.name} — Comptabilité</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Outfit',sans-serif;background:#f5f6fa;color:#1a1a2e;min-height:100vh}
+.hd{background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;padding:14px 28px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,.15)}.hd-l{display:flex;align-items:center;gap:12px}.hd-logo{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}.hd-t{font-weight:800;font-size:16px}.hd-s{font-size:10px;opacity:.5;letter-spacing:.8px;text-transform:uppercase}.hd-r{display:flex;align-items:center;gap:10px}.yr-sel{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:6px 12px;font-size:13px;font-family:inherit;outline:none}.yr-sel option{color:#000}
+.nv{display:flex;gap:2px;padding:0 20px;background:#fff;border-bottom:1px solid #e5e7eb;overflow-x:auto;position:sticky;top:66px;z-index:99}.nv-b{padding:13px 18px;border:none;background:none;cursor:pointer;font-size:12.5px;font-weight:500;font-family:inherit;color:#888;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap}.nv-b.ac{color:#3b82f6;font-weight:700;border-bottom-color:#3b82f6}.nv-bdg{margin-left:6px;background:#ef4444;color:#fff;border-radius:10px;padding:2px 7px;font-size:10px;font-weight:700}
+.mn{padding:20px 28px;max-width:1200px;margin:0 auto}.cd{background:#fff;border-radius:16px;padding:20px 24px;box-shadow:0 4px 24px rgba(0,0,0,.08);border:1px solid #f0f0f0;margin-bottom:12px}.sts{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}.st1{flex:1 1 170px;min-width:150px}.sl{font-size:10.5px;color:#999;text-transform:uppercase;letter-spacing:.8px;font-weight:600;margin-bottom:3px}.sv{font-size:22px;font-weight:800}.ss{font-size:10px;color:#999;margin-top:2px}
+.bt{padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;border:none;display:inline-flex;align-items:center;gap:5px}.bt:hover{opacity:.85;transform:translateY(-1px)}.bt-p{background:#3b82f6;color:#fff}.bt-s{background:#f3f4f6;color:#374151;border:1px solid #e5e7eb}.bt-g{background:#10b981;color:#fff}.bt-d{background:#ef4444;color:#fff}.bt-sm{padding:5px 12px;font-size:11px}
+.bdg{padding:3px 9px;border-radius:18px;font-size:10.5px;font-weight:600;display:inline-block;margin-left:5px}.bdg-brouillon{background:#e5e7eb;color:#374151}.bdg-envoyee{background:#dbeafe;color:#1e40af}.bdg-payee{background:#d1fae5;color:#065f46}.bdg-en_retard{background:#fee2e2;color:#991b1b}.bdg-annulee{background:#fef3c7;color:#92400e}
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}.mo-c{background:#fff;border-radius:18px;padding:26px 28px;width:100%;max-width:580px;max-height:85vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.fg{margin-bottom:11px}.fl{font-size:11.5px;font-weight:600;color:#555;display:block;margin-bottom:3px}.fi,.fs{width:100%;padding:9px 12px;border-radius:10px;border:1.5px solid #e5e7eb;font-size:13px;outline:none;font-family:inherit}.fi:focus,.fs:focus{border-color:#3b82f6}.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fa{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.fr{display:flex;gap:5px;flex-wrap:wrap}.fb{padding:6px 13px;border-radius:22px;border:1.5px solid #e5e7eb;background:#fff;color:#666;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}.fb.ac{border-color:#3b82f6;background:rgba(59,130,246,.06);color:#3b82f6}
+.lr{display:flex;gap:6px;margin-bottom:4px;align-items:center}.li{padding:7px 10px;border-radius:7px;border:1.5px solid #e5e7eb;font-size:12px;font-family:inherit}.al{background:none;border:1.5px dashed #ccc;border-radius:7px;padding:6px;width:100%;cursor:pointer;font-size:11px;color:#888;font-family:inherit;margin-top:2px}.tb{background:#f8fafc;border-radius:10px;padding:10px 14px;margin:10px 0}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}.csg{display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px}.csb{background:#f8fafc;padding:6px 8px;border-radius:6px}
+.cb-bg{height:6px;background:#f0f0f0;border-radius:6px}.cb-fl{height:100%;border-radius:6px;background:linear-gradient(90deg,#ec4899,#f472b6)}
+.ct2{display:flex;align-items:flex-end;gap:4px;height:140px}.cc2{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}.cb2{display:flex;gap:2px;align-items:flex-end;height:110px;width:100%}.cbr2{flex:1;border-radius:3px 3px 0 0;min-width:3px}.cla{font-size:9px;color:#999;margin-top:2px}
+.pf{height:8px;background:#f0f0f0;border-radius:8px;overflow:hidden}.pfl{height:100%;border-radius:8px}
+.atb{width:100%;border-collapse:collapse;font-size:12px}.atb th{text-align:right;padding:7px 10px;font-weight:600;color:#999}.atb th:first-child{text-align:left}.atb td{padding:7px 10px;text-align:right}.atb td:first-child{text-align:left;font-weight:600}.atb thead tr{border-bottom:2px solid #eee}.atb tbody tr{border-bottom:1px solid #f5f5f5}.atb tfoot tr{border-top:2px solid #ddd;font-weight:800}
+.pr2{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:10px;margin-bottom:4px}.pr2.late{background:#fef2f2}.pr2.ok{background:#f8fafc}
+.em0{text-align:center;padding:32px;color:#999}.em0-i{font-size:32px;margin-bottom:6px}
+.del{background:none;border:none;cursor:pointer;font-size:14px;color:#ccc}.del:hover{color:#ef4444}
+.warn{background:#fef3c7;border:1px solid #f59e0b;border-radius:12px;padding:10px 16px;margin-bottom:12px;font-size:12px;color:#92400e;font-weight:500}
+.bkg{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}.bkc{padding:24px;text-align:center}.fhid{display:none}
+@media(max-width:768px){.hd{padding:12px 16px}.mn{padding:14px}.f2{grid-template-columns:1fr}.nv{padding:0 10px}.nv-b{padding:11px 12px;font-size:11.5px}.cg{grid-template-columns:1fr}.bkg{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"><\\/script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"><\\/script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"><\\/script>
+<script type="text/babel">
+const {useState,useEffect,useMemo,useRef}=React;
+const CFG=${JSON.stringify(cfg)};
+const S=${JSON.stringify(S)};
+const CATS=${cats};
+const SEC_LABEL="${SEC.label}";
+const CH_LABEL="${chLabel}";
+const INITIALS="${initials}";
+
+const MS=["Jan","Fév","Mar","Avr","Mai","Jun","Jul","Aoû","Sep","Oct","Nov","Déc"];
+const MF=["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+const SL={brouillon:"Brouillon",envoyee:"Envoyée",payee:"Payée",en_retard:"En retard",annulee:"Annulée"};
+const uid=()=>Math.random().toString(36).slice(2,10);
+const fmt=n=>new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"}).format(n);
+const fD=d=>new Date(d).toLocaleDateString("fr-FR");
+const td=()=>new Date().toISOString().slice(0,10);
+const nowI=()=>new Date().toISOString();
+const addBD=(date,days)=>{const d=new Date(date);let a=0;while(a<days){d.setDate(d.getDate()+1);if(d.getDay()!==0&&d.getDay()!==6)a++;}return d.toISOString().slice(0,10);};
+const dD=(a,b)=>Math.ceil((new Date(b)-new Date(a))/864e5);
+const pc=(n,t)=>t>0?Math.round(n/t*100):0;
+function ld(k,f){try{return JSON.parse(localStorage.getItem(k))||f;}catch{return f;}}
+function sv(k,d){localStorage.setItem(k,JSON.stringify(d));}
+function Bdg({s}){return <span className={"bdg bdg-"+s}>{SL[s]||s}</span>;}
+function Mdl({open,onClose,title,ch}){if(!open)return null;return(<div className="mo" onClick={onClose}><div className="mo-c" onClick={e=>e.stopPropagation()}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><h3 style={{fontSize:17,fontWeight:700}}>{title}</h3><button onClick={onClose} style={{background:"none",border:"none",fontSize:18,cursor:"pointer",color:"#999"}}>✕</button></div>{ch}</div></div>);}
+
+function App(){
+  const chR=S.charges;const tvaSeuil=S.tvaSeuil||0;const tvaR=S.tva||.20;
+  const [tab,setTab]=useState("dash");
+  const [inv,setInv]=useState(()=>ld("cf_inv",[]));
+  const [exp,setExp]=useState(()=>ld("cf_exp",[]));
+  const [cli,setCli]=useState(()=>ld("cf_cli",[]));
+  const [yr,setYr]=useState(new Date().getFullYear());
+  useEffect(()=>{sv("cf_inv",inv);},[inv]);
+  useEffect(()=>{sv("cf_exp",exp);},[exp]);
+  useEffect(()=>{sv("cf_cli",cli);},[cli]);
+  useEffect(()=>{const n=td();setInv(p=>p.map(i=>i.status==="envoyee"&&i.ech&&i.ech<n?{...i,status:"en_retard"}:i));},[tab]);
+
+  const yI=useMemo(()=>inv.filter(i=>i.date?.startsWith(String(yr))),[inv,yr]);
+  const yE=useMemo(()=>exp.filter(e=>e.date?.startsWith(String(yr))),[exp,yr]);
+  const caHT=useMemo(()=>yI.filter(i=>i.status!=="annulee").reduce((s,i)=>s+(i.ht||0),0),[yI]);
+  const caE=useMemo(()=>yI.filter(i=>i.status==="payee").reduce((s,i)=>s+(i.ht||0),0),[yI]);
+  const tD=useMemo(()=>yE.reduce((s,e)=>s+(e.mt||0),0),[yE]);
+  const ch=caHT*chR;const ben=caE-tD-(caE*chR);
+  const tvaAct=tvaSeuil>0?caHT>tvaSeuil:true;
+  const enA=useMemo(()=>yI.filter(i=>i.status==="envoyee"||i.status==="en_retard").reduce((s,i)=>s+(i.ht||0),0),[yI]);
+  const nR=useMemo(()=>inv.filter(i=>i.status==="en_retard").length,[inv]);
+  const pTVA=tvaSeuil>0?Math.min((caHT/tvaSeuil)*100,100):100;
+  let isAmt=0;if(S.hasIS){const pr=caHT-tD;if(pr>0)isAmt=pr<=(S.isSeuil||42500)?pr*(S.is1||.15):(S.isSeuil||42500)*(S.is1||.15)+(pr-(S.isSeuil||42500))*(S.is2||.25);}
+
+  // Dashboard
+  const mC=useMemo(()=>{const m=Array(12).fill(0);yI.filter(i=>i.status!=="annulee").forEach(i=>{m[new Date(i.date).getMonth()]+=i.ht||0;});return m;},[yI]);
+  const mE=useMemo(()=>{const m=Array(12).fill(0);yE.forEach(e=>{m[new Date(e.date).getMonth()]+=e.mt||0;});return m;},[yE]);
+  const mx=Math.max(...mC,...mE,1);
+  const up=useMemo(()=>inv.filter(i=>i.status==="envoyee"||i.status==="en_retard").sort((a,b)=>(a.ech||"").localeCompare(b.ech||"")).slice(0,5),[inv]);
+
+  // Factures
+  const [fShow,fSetShow]=useState(false);const [fEId,fSetEId]=useState(null);const [fFilt,fSetFilt]=useState("toutes");
+  const fIni={client:"",desc:"",lignes:[{d:"",q:1,p:0}],delai:"30",date:td(),tva:false};
+  const [fForm,fSetForm]=useState(fIni);
+  const fON=()=>{fSetForm({...fIni,tva:tvaAct});fSetEId(null);fSetShow(true);};
+  const fOE=i=>{fSetForm({client:i.client,desc:i.desc||"",lignes:i.lignes||[{d:"",q:1,p:i.ht}],delai:String(i.dj||30),date:i.date,tva:i.tvA||false});fSetEId(i.id);fSetShow(true);};
+  const fDoS=()=>{const ht=fForm.lignes.reduce((s,l)=>s+l.q*l.p,0);const tv=fForm.tva?ht*tvaR:0;const ttc=ht+tv;const dj=parseInt(fForm.delai)||30;const ech=addBD(fForm.date,dj);if(fEId){setInv(p=>p.map(i=>i.id===fEId?{...i,client:fForm.client,desc:fForm.desc,lignes:fForm.lignes,ht,tv,ttc,tvA:fForm.tva,date:fForm.date,dj,ech}:i));}else{const n="FAC-"+String(inv.length+1).padStart(4,"0");setInv(p=>[...p,{id:uid(),num:n,client:fForm.client,desc:fForm.desc,lignes:fForm.lignes,ht,tv,ttc,tvA:fForm.tva,date:fForm.date,dj,ech,status:"brouillon",dp:null}]);}fSetShow(false);};
+  const fUS=(id,st)=>setInv(p=>p.map(i=>i.id===id?{...i,status:st,dp:st==="payee"?td():i.dp}:i));
+  const fDel=id=>{if(confirm("Supprimer ?"))setInv(p=>p.filter(i=>i.id!==id));};
+  const fFi=fFilt==="toutes"?inv:inv.filter(i=>i.status===fFilt);
+  const fHT=fForm.lignes.reduce((s,l)=>s+l.q*l.p,0);const fTV=fForm.tva?fHT*tvaR:0;
+  const fAL=()=>fSetForm(f=>({...f,lignes:[...f.lignes,{d:"",q:1,p:0}]}));
+  const fRL=i=>fSetForm(f=>({...f,lignes:f.lignes.filter((_,j)=>j!==i)}));
+  const fUL=(i,k,v)=>fSetForm(f=>({...f,lignes:f.lignes.map((l,j)=>j===i?{...l,[k]:v}:l)}));
+
+  // Dépenses
+  const [dShow,dSetShow]=useState(false);
+  const [dForm,dSetForm]=useState({desc:"",mt:"",cat:CATS[0],date:td()});
+  const dDoS=()=>{setExp(p=>[...p,{id:uid(),desc:dForm.desc,mt:Number(dForm.mt),cat:dForm.cat,date:dForm.date}]);dSetShow(false);dSetForm({desc:"",mt:"",cat:CATS[0],date:td()});};
+  const dDel=id=>{if(confirm("Supprimer ?"))setExp(p=>p.filter(e=>e.id!==id));};
+  const bC=useMemo(()=>{const m={};exp.forEach(e=>{m[e.cat]=(m[e.cat]||0)+e.mt;});return Object.entries(m).sort((a,b)=>b[1]-a[1]);},[exp]);
+  const tot=exp.reduce((s,e)=>s+e.mt,0);const mxC=bC.length>0?bC[0][1]:1;
+
+  // Clients
+  const [cShow,cSetShow]=useState(false);const [cForm,cSetForm]=useState({nom:"",email:"",tel:""});
+  const cDoS=()=>{setCli(p=>[...p,{id:uid(),...cForm}]);cSetShow(false);cSetForm({nom:"",email:"",tel:""});};
+  const cDel=id=>{if(confirm("Supprimer ?"))setCli(p=>p.filter(c=>c.id!==id));};
+  const cSt=useMemo(()=>{const m={};cli.forEach(c=>{const ci=inv.filter(i=>i.client===c.nom);m[c.id]={tot:ci.filter(i=>i.status!=="annulee").reduce((s,i)=>s+(i.ht||0),0),pend:ci.filter(i=>i.status==="envoyee"||i.status==="en_retard").reduce((s,i)=>s+(i.ht||0),0),n:ci.length};});return m;},[cli,inv]);
+
+  // Trésorerie
+  const paid=yI.filter(i=>i.status==="payee");const unpaid=inv.filter(i=>i.status==="envoyee"||i.status==="en_retard");
+  const mCF=useMemo(()=>MF.map((m,i)=>{const inc=paid.filter(x=>new Date(x.dp||x.date).getMonth()===i).reduce((s,x)=>s+(x.ht||0),0);const ex=yE.filter(e=>new Date(e.date).getMonth()===i).reduce((s,e)=>s+(e.mt||0),0);return{m:m.slice(0,3),i:inc,e:ex,n:inc-ex};}),[paid,yE]);
+
+  // Backup
+  const bRef=useRef(null);const [bMsg,bSetMsg]=useState(null);
+  const bEx=()=>{const d={v:"2.0",app:"ComptaFacile",date:nowI(),config:CFG,data:{invoices:inv,expenses:exp,clients:cli}};const b=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="sauvegarde-"+CFG.name.replace(/\\s/g,"-")+"-"+td().replace(/-/g,"")+".json";document.body.appendChild(a);a.click();document.body.removeChild(a);bSetMsg("ok");setTimeout(()=>bSetMsg(null),4e3);};
+  const bIm=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(!d.data)throw"";if(!confirm("Restaurer cette sauvegarde ?"))return;setInv(d.data.invoices||[]);setExp(d.data.expenses||[]);setCli(d.data.clients||[]);bSetMsg("ok");}catch{bSetMsg("err");}setTimeout(()=>bSetMsg(null),4e3);};r.readAsText(f);e.target.value="";};
+
+  const TABS=[{id:"dash",l:"Tableau de bord",i:"📊"},{id:"fac",l:"Factures",i:"📄"},{id:"dep",l:"Dépenses",i:"💸"},{id:"cli",l:"Clients",i:"👥"},{id:"tre",l:"Trésorerie",i:"🏦"},{id:"bak",l:"Sauvegarde",i:"💾"}];
+
+  return(<div>
+    <header className="hd"><div className="hd-l"><div className="hd-logo">{INITIALS}</div><div><div className="hd-t">{CFG.name}</div><div className="hd-s">{S.short||S.label} • {SEC_LABEL}</div></div></div><div className="hd-r"><span style={{fontSize:11,opacity:.6}}>Année:</span><select className="yr-sel" value={yr} onChange={e=>setYr(Number(e.target.value))}>{[2024,2025,2026,2027].map(y=><option key={y}>{y}</option>)}</select></div></header>
+    <nav className="nv">{TABS.map(t=>(<button key={t.id} className={"nv-b"+(tab===t.id?" ac":"")} onClick={()=>setTab(t.id)}><span style={{marginRight:4}}>{t.i}</span>{t.l}{t.id==="fac"&&nR>0&&<span className="nv-bdg">{nR}</span>}</button>))}</nav>
+    <main className="mn">
+
+    {/* DASHBOARD */}
+    {tab==="dash"&&<div>
+      <div className="sts"><div className="cd st1"><div className="sl">CA Facturé</div><div className="sv" style={{color:"#3b82f6"}}>{fmt(caHT)}</div><div className="ss">{yI.length} facture(s)</div></div><div className="cd st1"><div className="sl">CA Encaissé</div><div className="sv" style={{color:"#10b981"}}>{fmt(caE)}</div><div className="ss">Paiements reçus</div></div><div className="cd st1"><div className="sl">En attente</div><div className="sv" style={{color:nR>0?"#ef4444":"#f59e0b"}}>{fmt(enA)}</div><div className="ss">{nR>0?"⚠️ "+nR+" en retard":"À jour"}</div></div><div className="cd st1"><div className="sl">Dépenses</div><div className="sv" style={{color:"#ec4899"}}>{fmt(tD)}</div><div className="ss">{yE.length} opération(s)</div></div></div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:18}}>
+        <div className="cd"><div className="sl">{CH_LABEL} ({Math.round(chR*100)}%)</div><div style={{fontSize:22,fontWeight:800,color:"#ec4899",margin:"4px 0"}}>{fmt(ch)}</div>{S.hasIS&&<div style={{fontSize:11,color:"#8b5cf6",fontWeight:600,marginTop:3}}>IS estimé: {fmt(isAmt)}</div>}<div style={{marginTop:8,fontSize:13,fontWeight:700,color:ben>=0?"#10b981":"#ef4444"}}>Bénéfice net: {fmt(ben)}</div></div>
+        {tvaSeuil>0?<div className="cd"><div className="sl">Seuil TVA {tvaAct?"⚠️ DÉPASSÉ":""}</div><div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",margin:"4px 0 6px"}}><span style={{fontSize:18,fontWeight:800,color:tvaAct?"#ef4444":"#3b82f6"}}>{fmt(caHT)}</span><span style={{fontSize:11,color:"#999"}}>/ {fmt(tvaSeuil)}</span></div><div className="pf"><div className="pfl" style={{width:pTVA+"%",background:tvaAct?"linear-gradient(90deg,#ef4444,#f87171)":"linear-gradient(90deg,#3b82f6,#8b5cf6)"}}/></div><div style={{fontSize:10,color:tvaAct?"#ef4444":"#999",marginTop:4,fontWeight:tvaAct?700:400}}>{tvaAct?"TVA obligatoire":"Encore "+fmt(tvaSeuil-caHT)}</div></div>:<div className="cd"><div className="sl">TVA collectée</div><div style={{fontSize:18,fontWeight:800,color:"#8b5cf6",margin:"4px 0"}}>{fmt(caHT*.20)}</div><div style={{fontSize:10,color:"#999"}}>TVA obligatoire</div></div>}
+      </div>
+      <div className="cd" style={{marginBottom:18}}><div style={{fontSize:12,fontWeight:700,marginBottom:14}}>Revenus vs Dépenses — {yr}</div><div className="ct2">{MS.map((m,i)=>(<div key={m} className="cc2"><div className="cb2"><div className="cbr2" style={{background:"linear-gradient(180deg,#3b82f6,#8b5cf6)",height:(mC[i]/mx)*100+"%",minHeight:mC[i]>0?3:0,transition:"height .4s"}}/><div className="cbr2" style={{background:"linear-gradient(180deg,#f87171,#ec4899)",height:(mE[i]/mx)*100+"%",minHeight:mE[i]>0?3:0,transition:"height .4s"}}/></div><div className="cla">{m}</div></div>))}</div></div>
+      {up.length>0&&<div className="cd"><div style={{fontSize:12,fontWeight:700,marginBottom:10}}>Paiements en attente</div>{up.map(i=>{const dl=dD(td(),i.ech);return(<div key={i.id} className={"pr2 "+(dl<0?"late":"ok")}><div><div style={{fontWeight:600,fontSize:12}}>{i.num} — {i.client}</div><div style={{fontSize:10,color:"#999"}}>Éch. {fD(i.ech)}</div></div><div style={{textAlign:"right"}}><div style={{fontWeight:700,fontSize:13}}>{fmt(i.ht)}</div><div style={{fontSize:9,color:dl<0?"#ef4444":"#999",fontWeight:dl<0?700:400}}>{dl<0?Math.abs(dl)+"j retard":dl+"j"}</div></div></div>);})}</div>}
+    </div>}
+
+    {/* FACTURES */}
+    {tab==="fac"&&<div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14,flexWrap:"wrap",gap:8}}><div className="fr">{["toutes","brouillon","envoyee","payee","en_retard","annulee"].map(f=>(<button key={f} className={"fb"+(fFilt===f?" ac":"")} onClick={()=>fSetFilt(f)}>{f==="toutes"?"Toutes":SL[f]}</button>))}</div><button className="bt bt-p" onClick={fON}>+ Facture</button></div>
+      {tvaAct&&tvaSeuil>0&&<div className="warn">⚠️ Seuil TVA dépassé — Facturez la TVA ({Math.round(tvaR*100)}%)</div>}
+      {fFi.length===0?<div className="cd em0"><div className="em0-i">📄</div>Aucune facture</div>:fFi.sort((a,b)=>(b.date||"").localeCompare(a.date||"")).map(i=>(<div key={i.id} className="cd" style={{padding:"12px 18px",marginBottom:8}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:6}}><div style={{flex:1,minWidth:160}}><div style={{marginBottom:2}}><span style={{fontWeight:800,fontSize:13}}>{i.num}</span><Bdg s={i.status}/></div><div style={{fontSize:11,color:"#666"}}>{i.client}</div><div style={{fontSize:10,color:"#999"}}>{fD(i.date)} • {i.dj}j • Éch. {fD(i.ech)}{i.tvA?" • TVA":""}</div></div><div style={{textAlign:"right"}}><div style={{fontSize:17,fontWeight:800}}>{fmt(i.ttc||i.ht)}</div>{i.tvA&&<div style={{fontSize:9,color:"#999"}}>HT: {fmt(i.ht)}</div>}</div></div><div style={{display:"flex",gap:4,marginTop:8,flexWrap:"wrap"}}>{i.status==="brouillon"&&<button className="bt bt-s bt-sm" onClick={()=>fUS(i.id,"envoyee")}>📤 Envoyée</button>}{(i.status==="envoyee"||i.status==="en_retard")&&<button className="bt bt-g bt-sm" onClick={()=>fUS(i.id,"payee")}>✅ Payée</button>}{i.status!=="annulee"&&i.status!=="payee"&&<button className="bt bt-s bt-sm" onClick={()=>fUS(i.id,"annulee")}>🚫</button>}<button className="bt bt-s bt-sm" onClick={()=>fOE(i)}>✏️</button><button className="bt bt-d bt-sm" onClick={()=>fDel(i.id)}>🗑</button></div></div>))}
+      <Mdl open={fShow} onClose={()=>fSetShow(false)} title={fEId?"Modifier":"Nouvelle facture"} ch={<div>
+        <div className="f2"><div className="fg">{cli.length>0?<><label className="fl">Client</label><select className="fs" value={fForm.client} onChange={e=>fSetForm(f=>({...f,client:e.target.value}))}><option value="">—</option>{cli.map(c=><option key={c.id} value={c.nom}>{c.nom}</option>)}</select></>:<><label className="fl">Client</label><input className="fi" value={fForm.client} onChange={e=>fSetForm(f=>({...f,client:e.target.value}))}/></>}</div><div className="fg"><label className="fl">Date</label><input className="fi" type="date" value={fForm.date} onChange={e=>fSetForm(f=>({...f,date:e.target.value}))}/></div></div>
+        <div className="f2"><div className="fg"><label className="fl">Délai</label><select className="fs" value={fForm.delai} onChange={e=>fSetForm(f=>({...f,delai:e.target.value}))}><option value="0">Comptant</option><option value="15">15j</option><option value="30">30j</option><option value="45">45j</option><option value="60">60j</option></select></div><div style={{display:"flex",alignItems:"center",gap:6,paddingTop:18}}><input type="checkbox" id="tv" checked={fForm.tva} onChange={e=>fSetForm(f=>({...f,tva:e.target.checked}))}/><label htmlFor="tv" style={{fontSize:12,fontWeight:600}}>TVA {Math.round(tvaR*100)}%</label></div></div>
+        <div className="fg"><label className="fl">Lignes</label>{fForm.lignes.map((l,i)=>(<div key={i} className="lr"><input className="li" style={{flex:3}} placeholder="Description" value={l.d} onChange={e=>fUL(i,"d",e.target.value)}/><input className="li" style={{flex:1,textAlign:"center"}} type="number" value={l.q} onChange={e=>fUL(i,"q",Number(e.target.value))} min="1"/><input className="li" style={{flex:1,textAlign:"right"}} type="number" placeholder="P.U." value={l.p||""} onChange={e=>fUL(i,"p",Number(e.target.value))} min="0" step=".01"/><span style={{flex:1,fontSize:11,fontWeight:700,textAlign:"right"}}>{fmt(l.q*l.p)}</span>{fForm.lignes.length>1&&<button style={{background:"none",border:"none",color:"#ef4444",cursor:"pointer"}} onClick={()=>fRL(i)}>✕</button>}</div>))}<button className="al" onClick={fAL}>+ Ligne</button></div>
+        <div className="tb"><div style={{display:"flex",justifyContent:"space-between",fontSize:12}}><span>HT</span><span style={{fontWeight:700}}>{fmt(fHT)}</span></div>{fForm.tva&&<div style={{display:"flex",justifyContent:"space-between",fontSize:12,marginTop:2}}><span>TVA</span><span style={{fontWeight:700}}>{fmt(fTV)}</span></div>}<div style={{display:"flex",justifyContent:"space-between",fontSize:15,fontWeight:800,marginTop:5,paddingTop:5,borderTop:"1px solid #e5e7eb"}}><span>TTC</span><span>{fmt(fHT+fTV)}</span></div></div>
+        <div className="fa"><button className="bt bt-s" onClick={()=>fSetShow(false)}>Annuler</button><button className="bt bt-p" onClick={fDoS} disabled={!fForm.client||fHT<=0}>Enregistrer</button></div>
+      </div>}/>
+    </div>}
+
+    {/* DEPENSES */}
+    {tab==="dep"&&<div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><div style={{fontSize:11,color:"#999"}}>Total: <strong style={{color:"#ec4899",fontSize:15}}>{fmt(tot)}</strong></div><button className="bt bt-p" onClick={()=>dSetShow(true)}>+ Dépense</button></div>
+      {bC.length>0&&<div className="cd" style={{marginBottom:14}}><div style={{fontSize:12,fontWeight:700,marginBottom:10}}>Par catégorie</div>{bC.map(([c,v])=>(<div key={c} style={{marginBottom:7}}><div style={{display:"flex",justifyContent:"space-between",fontSize:11,marginBottom:2}}><span style={{fontWeight:600}}>{c}</span><span style={{color:"#666"}}>{fmt(v)} ({pc(v,tot)}%)</span></div><div className="cb-bg"><div className="cb-fl" style={{width:(v/mxC)*100+"%",transition:"width .4s"}}/></div></div>))}</div>}
+      {exp.length===0?<div className="cd em0"><div className="em0-i">💸</div>Aucune dépense</div>:exp.sort((a,b)=>(b.date||"").localeCompare(a.date||"")).map(e=>(<div key={e.id} className="cd" style={{padding:"10px 16px",marginBottom:5}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontWeight:700,fontSize:12}}>{e.desc}</div><div style={{fontSize:10,color:"#999"}}>{fD(e.date)} • {e.cat}</div></div><div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontWeight:800,fontSize:13,color:"#ec4899"}}>-{fmt(e.mt)}</span><button className="del" onClick={()=>dDel(e.id)}>🗑</button></div></div></div>))}
+      <Mdl open={dShow} onClose={()=>dSetShow(false)} title="Nouvelle dépense" ch={<div>
+        <div className="fg"><label className="fl">Description</label><input className="fi" value={dForm.desc} onChange={e=>dSetForm(f=>({...f,desc:e.target.value}))}/></div>
+        <div className="f2"><div className="fg"><label className="fl">Montant (€)</label><input className="fi" type="number" value={dForm.mt} onChange={e=>dSetForm(f=>({...f,mt:e.target.value}))} min="0" step=".01"/></div><div className="fg"><label className="fl">Date</label><input className="fi" type="date" value={dForm.date} onChange={e=>dSetForm(f=>({...f,date:e.target.value}))}/></div></div>
+        <div className="fg"><label className="fl">Catégorie</label><select className="fs" value={dForm.cat} onChange={e=>dSetForm(f=>({...f,cat:e.target.value}))}>{CATS.map(c=><option key={c}>{c}</option>)}</select></div>
+        <div className="fa"><button className="bt bt-s" onClick={()=>dSetShow(false)}>Annuler</button><button className="bt bt-p" onClick={dDoS} disabled={!dForm.desc||!dForm.mt}>Enregistrer</button></div>
+      </div>}/>
+    </div>}
+
+    {/* CLIENTS */}
+    {tab==="cli"&&<div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><div style={{fontSize:11,color:"#999"}}>{cli.length} client(s)</div><button className="bt bt-p" onClick={()=>cSetShow(true)}>+ Client</button></div>
+      {cli.length===0?<div className="cd em0"><div className="em0-i">👥</div>Aucun client</div>:
+        <div className="cg">{cli.map(c=>{const s2=cSt[c.id]||{};return(<div key={c.id} className="cd"><div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}><div><div style={{fontWeight:800,fontSize:14}}>{c.nom}</div>{c.email&&<div style={{fontSize:10,color:"#999"}}>{c.email}</div>}</div><button className="del" onClick={()=>cDel(c.id)}>🗑</button></div><div className="csg"><div className="csb"><div style={{color:"#999",fontSize:9}}>Facturé</div><div style={{fontWeight:700,fontSize:12,color:"#3b82f6"}}>{fmt(s2.tot||0)}</div></div><div className="csb"><div style={{color:"#999",fontSize:9}}>Attente</div><div style={{fontWeight:700,fontSize:12,color:"#f59e0b"}}>{fmt(s2.pend||0)}</div></div></div></div>);})}</div>}
+      <Mdl open={cShow} onClose={()=>cSetShow(false)} title="Nouveau client" ch={<div>
+        <div className="fg"><label className="fl">Nom / Entreprise</label><input className="fi" value={cForm.nom} onChange={e=>cSetForm(f=>({...f,nom:e.target.value}))}/></div>
+        <div className="f2"><div className="fg"><label className="fl">Email</label><input className="fi" value={cForm.email} onChange={e=>cSetForm(f=>({...f,email:e.target.value}))}/></div><div className="fg"><label className="fl">Tél</label><input className="fi" value={cForm.tel} onChange={e=>cSetForm(f=>({...f,tel:e.target.value}))}/></div></div>
+        <div className="fa"><button className="bt bt-s" onClick={()=>cSetShow(false)}>Annuler</button><button className="bt bt-p" onClick={cDoS} disabled={!cForm.nom}>Enregistrer</button></div>
+      </div>}/>
+    </div>}
+
+    {/* TRESORERIE */}
+    {tab==="tre"&&<div>
+      <div className="sts"><div className="cd st1"><div className="sl">Encaissé</div><div className="sv" style={{color:"#10b981"}}>{fmt(caE)}</div></div><div className="cd st1"><div className="sl">En attente</div><div className="sv" style={{color:"#f59e0b"}}>{fmt(enA)}</div></div><div className="cd st1"><div className="sl">Dépenses</div><div className="sv" style={{color:"#ec4899"}}>{fmt(tD)}</div></div><div className="cd st1"><div className="sl">{CH_LABEL}</div><div className="sv" style={{color:"#8b5cf6"}}>{fmt(ch)}</div></div></div>
+      <div className="cd" style={{textAlign:"center",marginBottom:18,padding:20,background:ben>=0?"linear-gradient(135deg,#d1fae5,#a7f3d0)":"linear-gradient(135deg,#fee2e2,#fecaca)"}}><div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:ben>=0?"#065f46":"#991b1b"}}>Résultat net</div><div style={{fontSize:28,fontWeight:800,color:ben>=0?"#065f46":"#991b1b"}}>{fmt(ben)}</div></div>
+      <div className="cd" style={{marginBottom:18}}><div style={{fontSize:12,fontWeight:700,marginBottom:10}}>Flux mensuel</div><div style={{overflowX:"auto"}}><table className="atb"><thead><tr><th style={{textAlign:"left"}}>Mois</th><th style={{color:"#10b981"}}>Entrées</th><th style={{color:"#ec4899"}}>Sorties</th><th>Solde</th></tr></thead><tbody>{mCF.map((r,i)=>(<tr key={i}><td>{r.m}</td><td style={{color:"#10b981",fontWeight:600}}>{r.i>0?fmt(r.i):"—"}</td><td style={{color:"#ec4899",fontWeight:600}}>{r.e>0?fmt(r.e):"—"}</td><td style={{fontWeight:700,color:r.n>=0?"#10b981":"#ef4444"}}>{r.i>0||r.e>0?fmt(r.n):"—"}</td></tr>))}</tbody><tfoot><tr><td>Total</td><td style={{color:"#10b981"}}>{fmt(mCF.reduce((s,r)=>s+r.i,0))}</td><td style={{color:"#ec4899"}}>{fmt(mCF.reduce((s,r)=>s+r.e,0))}</td><td style={{color:ben>=0?"#10b981":"#ef4444"}}>{fmt(mCF.reduce((s,r)=>s+r.n,0))}</td></tr></tfoot></table></div></div>
+      {unpaid.length>0&&<div className="cd"><div style={{fontSize:12,fontWeight:700,marginBottom:10}}>Créances</div>{unpaid.sort((a,b)=>(a.ech||"").localeCompare(b.ech||"")).map(i=>{const dl=dD(td(),i.ech);return(<div key={i.id} className={"pr2 "+(dl<0?"late":"ok")}><div><span style={{fontWeight:700,fontSize:12,marginRight:5}}>{i.num}</span><span style={{color:"#666",fontSize:11}}>{i.client}</span><Bdg s={i.status}/></div><div style={{textAlign:"right"}}><div style={{fontWeight:700,fontSize:12}}>{fmt(i.ht)}</div><div style={{fontSize:9,color:dl<0?"#ef4444":"#999"}}>{dl<0?Math.abs(dl)+"j retard":"Éch. "+fD(i.ech)}</div></div></div>);})}</div>}
+    </div>}
+
+    {/* SAUVEGARDE */}
+    {tab==="bak"&&<div>
+      <div className="bkg"><div className="cd bkc"><div style={{fontSize:36,marginBottom:8}}>💾</div><div style={{fontSize:15,fontWeight:800,marginBottom:5}}>Exporter</div><div style={{fontSize:11,color:"#999",marginBottom:14}}>Copie de sauvegarde JSON</div><button className="bt bt-p" onClick={bEx} style={{width:"100%",justifyContent:"center"}}>⬇️ Télécharger</button></div><div className="cd bkc"><div style={{fontSize:36,marginBottom:8}}>📂</div><div style={{fontSize:15,fontWeight:800,marginBottom:5}}>Restaurer</div><div style={{fontSize:11,color:"#999",marginBottom:14}}>Charger un fichier</div><input type="file" accept=".json" className="fhid" ref={bRef} onChange={bIm}/><button className="bt bt-g" onClick={()=>bRef.current.click()} style={{width:"100%",justifyContent:"center"}}>⬆️ Charger</button></div></div>
+      {bMsg&&<div style={{background:bMsg==="ok"?"#d1fae5":"#fee2e2",color:bMsg==="ok"?"#065f46":"#991b1b",padding:"8px 14px",borderRadius:10,fontSize:11,fontWeight:600,marginBottom:12}}>{bMsg==="ok"?"Opération réussie !":"Fichier invalide"}</div>}
+      <div className="cd">
+        <div style={{fontSize:12,fontWeight:700,marginBottom:8}}>Informations</div>
+        {[["Entreprise",CFG.name],["Statut",S.label||S.short],["Secteur",SEC_LABEL],["Données",inv.length+" fact. • "+exp.length+" dép. • "+cli.length+" cli."]].map(([l,v])=>(<div key={l} style={{display:"flex",justifyContent:"space-between",padding:"6px 10px",background:"#f8fafc",borderRadius:7,fontSize:11,marginBottom:3}}><span style={{color:"#666"}}>{l}</span><span style={{fontWeight:700}}>{v}</span></div>))}
+      </div>
+    </div>}
+
+    </main>
+  </div>);
+}
+ReactDOM.createRoot(document.getElementById("app")).render(<App/>);
+<\\/script>
+</body>
+</html>`;
+}
+
+// ═══ ROOT ═══
+function App(){
+  const [pg,setPg]=useState("land");
+  const [cfg,setCfg]=useState(null);
+  return(<div>
+    {pg==="land"&&<Landing onStart={()=>setPg("wiz")}/>}
+    {pg==="wiz"&&<Wizard onDone={c=>{setCfg(c);setPg("dl");}}/>}
+    {pg==="dl"&&cfg&&<DownloadPage cfg={cfg} onRestart={()=>{setCfg(null);setPg("wiz");}}/>}
+  </div>);
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
