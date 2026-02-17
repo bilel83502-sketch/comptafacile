@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ComptaFacile — Comptabilité gratuite</title>
+<meta name="description" content="Outil de comptabilité gratuit pour micro-entreprise, SARL, SAS, SASU, EI, EURL. Factures, dépenses, trésorerie.">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ComptaFacile">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<link rel="icon" href="./icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{});});}</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+button,select,input{-webkit-tap-highlight-color:transparent;font-family:inherit}
+
+/* ═══════════════════════ LANDING ═══════════════════════ */
+.land{background:#0a0f1c;color:#e2e8f0;min-height:100vh}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 24px;background:radial-gradient(ellipse at 50% 0%,rgba(59,130,246,.13) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(139,92,246,.08) 0%,transparent 40%),#0a0f1c;position:relative}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 120px,rgba(255,255,255,.008) 120px,rgba(255,255,255,.008) 121px),repeating-linear-gradient(0deg,transparent,transparent 120px,rgba(255,255,255,.008) 120px,rgba(255,255,255,.008) 121px)}
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);padding:8px 20px;border-radius:40px;font-size:13px;color:#3b82f6;font-weight:600;margin-bottom:28px;position:relative;animation:fd .6s .1s both}
+.pill::before{content:'';width:7px;height:7px;border-radius:50%;background:#10b981;animation:pls 2s infinite}
+@keyframes pls{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:clamp(34px,6vw,68px);font-weight:900;line-height:1.05;letter-spacing:-2px;margin-bottom:18px;animation:fd .6s .2s both;position:relative}
+.hero h1 span{background:linear-gradient(135deg,#3b82f6,#8b5cf6,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero>p{font-size:clamp(14px,2vw,18px);color:#94a3b8;max-width:540px;line-height:1.6;margin-bottom:36px;animation:fd .6s .3s both;position:relative}
+@keyframes fd{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+
+/* Install button */
+.inst-btn{display:inline-flex;align-items:center;gap:12px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;padding:18px 40px;border-radius:16px;font-size:18px;font-weight:700;border:none;cursor:pointer;transition:all .3s;box-shadow:0 8px 32px rgba(16,185,129,.3);animation:fd .6s .4s both;position:relative}
+.inst-btn:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(16,185,129,.4)}
+.inst-btn .icn{font-size:24px}
+
+/* iOS Instructions overlay */
+.ios-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:24px;animation:fdin .3s both;backdrop-filter:blur(8px)}
+@keyframes fdin{from{opacity:0}to{opacity:1}}
+.ios-box{background:#1e293b;border-radius:24px 24px 0 0;padding:32px 28px;width:100%;max-width:400px;text-align:center;animation:slUp .4s both}
+@keyframes slUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.ios-box h3{font-size:20px;font-weight:800;color:#fff;margin-bottom:16px}
+.ios-steps{text-align:left;margin-bottom:20px}
+.ios-step{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06);color:#e2e8f0;font-size:14px}
+.ios-step:last-child{border:none}
+.ios-step .num{width:28px;height:28px;border-radius:50%;background:#3b82f6;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.ios-step .txt{line-height:1.4}
+.ios-step .txt strong{color:#3b82f6}
+.ios-arrow{font-size:40px;margin-bottom:10px;animation:bounce 1.5s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.ios-close{background:rgba(255,255,255,.1);color:#fff;border:none;padding:12px 32px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;width:100%;margin-top:4px}
+
+/* Sections */
+.lsec{padding:70px 24px;max-width:1100px;margin:0 auto}
+.lsec h2{font-size:28px;font-weight:800;text-align:center;margin-bottom:8px;letter-spacing:-.5px;color:#e2e8f0}
+.lsec>p{text-align:center;color:#94a3b8;margin-bottom:30px;font-size:14px}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.how-s{text-align:center;padding:16px}
+.how-n{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;margin:0 auto 12px;color:#fff}
+.how-t{font-weight:700;font-size:14px;margin-bottom:4px;color:#e2e8f0}
+.how-d{font-size:12px;color:#94a3b8;line-height:1.5}
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.feat{background:#1e2a3a;border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:24px 20px;transition:all .3s}
+.feat:hover{border-color:rgba(59,130,246,.2);transform:translateY(-3px)}
+.feat .ic{font-size:26px;margin-bottom:8px}
+.feat .ti{font-size:14px;font-weight:700;margin-bottom:4px;color:#e2e8f0}
+.feat .de{font-size:12px;color:#94a3b8;line-height:1.5}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:9px;margin-top:14px}
+.scard{background:#1e2a3a;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:13px;text-align:center}
+.scard .em{font-size:20px}
+.scard .nm{font-weight:700;font-size:12px;color:#e2e8f0}
+.scard .ds{font-size:9px;color:#94a3b8;margin-top:1px}
+.ctab{text-align:center;padding:50px 24px 80px}
+.ctab .sub{margin-top:14px;font-size:12px;color:#94a3b8}
+.lfooter{text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,.06);font-size:10px;color:#64748b}
+
+/* ═══════════════════════ WIZARD ═══════════════════════ */
+.wiz{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;background:radial-gradient(ellipse at 50% 0%,rgba(59,130,246,.08) 0%,transparent 60%),#0a0f1c}
+.wc{background:#111827;border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:34px;max-width:600px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.wprog{display:flex;gap:6px;margin-bottom:20px}
+.wd{height:4px;flex:1;border-radius:4px;background:rgba(255,255,255,.07)}
+.wd.done{background:#3b82f6}.wd.cur{background:linear-gradient(90deg,#3b82f6,#8b5cf6)}
+.wlbl{font-size:11px;color:#3b82f6;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.wtit{font-size:21px;font-weight:800;margin-bottom:18px;color:#e2e8f0}
+.wopts{display:grid;gap:7px;margin-bottom:20px;max-height:360px;overflow-y:auto}
+.wopt{background:#1a2236;border:2px solid transparent;border-radius:14px;padding:13px 15px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:12px;color:#e2e8f0}
+.wopt:hover{border-color:rgba(59,130,246,.3)}
+.wopt.sel{border-color:#3b82f6;background:rgba(59,130,246,.08)}
+.wopt .em{font-size:22px;flex-shrink:0}
+.wopt .ti{font-weight:700;font-size:13px}
+.wopt .di{font-size:10px;color:#94a3b8}
+.winp{width:100%;padding:13px 16px;border-radius:12px;border:2px solid rgba(255,255,255,.08);background:#1a2236;color:#fff;font-size:15px;outline:none;margin-bottom:16px}
+.winp:focus{border-color:#3b82f6}
+.wacts{display:flex;gap:10px;justify-content:space-between}
+.wbtn{padding:13px 26px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+.wbp{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;box-shadow:0 4px 18px rgba(59,130,246,.3)}
+.wbp:hover{transform:translateY(-2px)}
+.wbs{background:#1a2236;color:#e2e8f0}
+
+/* ═══════════════════════ APP ═══════════════════════ */
+.app{background:#f5f6fa;color:#1a1a2e;min-height:100vh}
+.hd{background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;padding:13px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,.15)}
+.hd-l{display:flex;align-items:center;gap:10px}
+.hd-logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px}
+.hd-t{font-weight:800;font-size:14px}
+.hd-s{font-size:9px;opacity:.5;letter-spacing:.7px;text-transform:uppercase}
+.yr{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:5px 10px;font-size:12px;outline:none}
+.yr option{color:#000}
+.nv{display:flex;gap:1px;padding:0 12px;background:#fff;border-bottom:1px solid #e5e7eb;overflow-x:auto;position:sticky;top:60px;z-index:99;-webkit-overflow-scrolling:touch}
+.nb{padding:10px 13px;border:none;background:none;cursor:pointer;font-size:11px;font-weight:500;color:#888;border-bottom:3px solid transparent;white-space:nowrap}
+.nb.ac{color:#3b82f6;font-weight:700;border-bottom-color:#3b82f6}
+.nbdg{margin-left:4px;background:#ef4444;color:#fff;border-radius:8px;padding:1px 5px;font-size:9px;font-weight:700}
+.mn{padding:16px 18px;max-width:1200px;margin:0 auto}
+.cd{background:#fff;border-radius:14px;padding:15px 18px;box-shadow:0 2px 12px rgba(0,0,0,.05);border:1px solid #f0f0f0;margin-bottom:10px}
+.rw{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.st{flex:1;min-width:120px}
+.sl{font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.7px;font-weight:600;margin-bottom:1px}
+.sv{font-size:19px;font-weight:800}
+.ss{font-size:9px;color:#999;margin-top:1px}
+.btn{padding:7px 14px;border-radius:9px;font-size:11px;font-weight:600;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:4px}
+.btn:hover{opacity:.85}
+.bp{background:#3b82f6;color:#fff}
+.bse{background:#f3f4f6;color:#374151;border:1px solid #e5e7eb}
+.bg{background:#10b981;color:#fff}
+.bd{background:#ef4444;color:#fff}
+.bsm{padding:3px 8px;font-size:10px}
+.bdg{padding:2px 7px;border-radius:14px;font-size:9px;font-weight:600;display:inline-block;margin-left:3px}
+.b-brouillon{background:#e5e7eb;color:#374151}
+.b-envoyee{background:#dbeafe;color:#1e40af}
+.b-payee{background:#d1fae5;color:#065f46}
+.b-en_retard{background:#fee2e2;color:#991b1b}
+.b-annulee{background:#fef3c7;color:#92400e}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:14px;backdrop-filter:blur(4px)}
+.mdl{background:#fff;border-radius:18px;padding:22px;width:100%;max-width:520px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.fg{margin-bottom:8px}
+.fl{font-size:10px;font-weight:600;color:#555;display:block;margin-bottom:2px}
+.fi,.fsl{width:100%;padding:8px 11px;border-radius:9px;border:1.5px solid #e5e7eb;font-size:12px;outline:none;background:#fff}
+.fi:focus,.fsl:focus{border-color:#3b82f6}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fac{display:flex;gap:7px;justify-content:flex-end;margin-top:12px}
+.frow{display:flex;gap:3px;flex-wrap:wrap}
+.fbtn{padding:4px 10px;border-radius:16px;border:1.5px solid #e5e7eb;background:#fff;color:#666;font-size:10px;font-weight:600;cursor:pointer}
+.fbtn.ac{border-color:#3b82f6;background:rgba(59,130,246,.06);color:#3b82f6}
+.lrow{display:flex;gap:4px;margin-bottom:3px;align-items:center}
+.linp{padding:6px 8px;border-radius:6px;border:1.5px solid #e5e7eb;font-size:11px}
+.addl{background:none;border:1.5px dashed #ccc;border-radius:6px;padding:5px;width:100%;cursor:pointer;font-size:10px;color:#888;margin-top:2px}
+.tbox{background:#f8fafc;border-radius:9px;padding:8px 12px;margin:8px 0}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
+.cst{display:grid;grid-template-columns:1fr 1fr;gap:3px;font-size:10px}
+.csb{background:#f8fafc;padding:4px 6px;border-radius:4px}
+.barbg{height:5px;background:#f0f0f0;border-radius:5px}
+.barfl{height:100%;border-radius:5px;background:linear-gradient(90deg,#ec4899,#f472b6);transition:width .4s}
+.chart{display:flex;align-items:flex-end;gap:3px;height:120px}
+.ccol{flex:1;display:flex;flex-direction:column;align-items:center}
+.cbars{display:flex;gap:1px;align-items:flex-end;height:95px;width:100%}
+.cbar{flex:1;border-radius:2px 2px 0 0;min-width:2px;transition:height .4s}
+.clbl{font-size:7px;color:#999;margin-top:1px}
+.progbg{height:6px;background:#f0f0f0;border-radius:6px;overflow:hidden}
+.progfl{height:100%;border-radius:6px}
+.tbl{width:100%;border-collapse:collapse;font-size:10px}
+.tbl th{text-align:right;padding:5px 7px;font-weight:600;color:#999}
+.tbl th:first-child{text-align:left}
+.tbl td{padding:5px 7px;text-align:right}
+.tbl td:first-child{text-align:left;font-weight:600}
+.tbl thead tr{border-bottom:2px solid #eee}
+.tbl tbody tr{border-bottom:1px solid #f5f5f5}
+.prow{display:flex;justify-content:space-between;align-items:center;padding:6px 9px;border-radius:7px;margin-bottom:3px}
+.prow.late{background:#fef2f2}.prow.ok{background:#f8fafc}
+.empty{text-align:center;padding:22px;color:#999}
+.emptyi{font-size:24px;margin-bottom:4px}
+.del{background:none;border:none;cursor:pointer;font-size:12px;color:#ccc}.del:hover{color:#ef4444}
+.warn{background:#fef3c7;border:1px solid #f59e0b;border-radius:9px;padding:7px 12px;margin-bottom:8px;font-size:10px;color:#92400e}
+.bkg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.bkc{padding:16px;text-align:center}
+
+@media(max-width:768px){
+  .feats,.how{grid-template-columns:1fr}
+  .hd{padding:10px 14px}.mn{padding:12px}
+  .f2{grid-template-columns:1fr}
+  .nb{padding:9px 10px;font-size:10px}
+  .cgrid{grid-template-columns:1fr}
+  .bkg{grid-template-columns:1fr}
+  .wc{padding:24px 16px}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel">
+const {useState,useEffect,useMemo,useRef}=React;
+
+/* ═══ DETECT ═══ */
+const isStandalone=window.navigator.standalone===true||window.matchMedia('(display-mode:standalone)').matches;
+const isIOS=/iPhone|iPad|iPod/.test(navigator.userAgent);
+const isAndroid=/Android/.test(navigator.userAgent);
+
+/* ═══ DATA ═══ */
+const STATUTS={
+  micro_service:{label:"Micro-entreprise (Services)",short:"Micro (Services)",charges:.221,tvaSeuil:36800,tva:.20,hasIS:false,icon:"🧑‍💻",desc:"URSSAF 22.1%"},
+  micro_commerce:{label:"Micro-entreprise (Commerce)",short:"Micro (Commerce)",charges:.123,tvaSeuil:91900,tva:.20,hasIS:false,icon:"🛒",desc:"URSSAF 12.3%"},
+  micro_liberal:{label:"Micro-entreprise (Libéral)",short:"Micro (Libéral)",charges:.211,tvaSeuil:36800,tva:.20,hasIS:false,icon:"⚖️",desc:"URSSAF 21.1%"},
+  ei:{label:"Entreprise Individuelle",short:"EI",charges:.45,tvaSeuil:36800,tva:.20,hasIS:false,icon:"👤",desc:"Charges ~45%"},
+  eurl_ir:{label:"EURL à l'IR",short:"EURL (IR)",charges:.45,tvaSeuil:0,tva:.20,hasIS:false,icon:"🏢",desc:"TNS ~45%"},
+  eurl_is:{label:"EURL à l'IS",short:"EURL (IS)",charges:.45,tvaSeuil:0,tva:.20,hasIS:true,is1:.15,isSeuil:42500,is2:.25,icon:"🏢",desc:"IS 15/25% • TNS"},
+  sarl:{label:"SARL",short:"SARL",charges:.45,tvaSeuil:0,tva:.20,hasIS:true,is1:.15,isSeuil:42500,is2:.25,icon:"🏛",desc:"IS 15/25% • TNS"},
+  sasu:{label:"SASU",short:"SASU",charges:.78,tvaSeuil:0,tva:.20,hasIS:true,is1:.15,isSeuil:42500,is2:.25,icon:"🚀",desc:"IS • Assimilé salarié"},
+  sas:{label:"SAS",short:"SAS",charges:.78,tvaSeuil:0,tva:.20,hasIS:true,is1:.15,isSeuil:42500,is2:.25,icon:"🏗",desc:"IS • Assimilé salarié"},
+};
+const SECTEURS={
+  btp:{label:"BTP / Construction",icon:"🔨",cats:["Matériaux","Outillage","Location engins","Sous-traitance","EPI & Sécurité","Transport","Assurance décennale","Carburant","Téléphone","Autre"]},
+  transport:{label:"Transport",icon:"🚛",cats:["Carburant","Péages","Entretien véhicule","Assurance","Location véhicule","Stationnement","Téléphone","Repas route","Autre"]},
+  commerce:{label:"Commerce",icon:"🏪",cats:["Stock & Marchandises","Emballages","Frais de port","Local & Loyer","Publicité","Assurance","Téléphone","Logiciel caisse","Autre"]},
+  service:{label:"Services / Conseil",icon:"💼",cats:["Déplacement","Logiciel & Abo","Téléphone & Internet","Formation","Fournitures","Assurance RC Pro","Repas","Sous-traitance","Autre"]},
+  tech:{label:"Tech / Info",icon:"💻",cats:["Hébergement & Cloud","Logiciels","Matériel info","Coworking","Formation","Téléphone","Sous-traitance","Publicité","Autre"]},
+  restauration:{label:"Restauration",icon:"🍽",cats:["Matières premières","Entretien","Équipement","Loyer","Énergie","Consommables","Assurance","Publicité","Autre"]},
+  sante:{label:"Santé",icon:"⚕️",cats:["Matériel médical","Consommables","Local & Loyer","Assurance RC Pro","Formation","Logiciel","Téléphone","Autre"]},
+  artisanat:{label:"Artisanat",icon:"🎨",cats:["Matières premières","Outillage","Emballages","Frais de port","Atelier","Marchés & Salons","Assurance","Autre"]},
+  immobilier:{label:"Immobilier",icon:"🏠",cats:["Travaux","Assurance PNO","Taxe foncière","Gestion","Copropriété","Intérêts emprunt","Diagnostics","Autre"]},
+  autre:{label:"Autre",icon:"📦",cats:["Fournitures","Déplacement","Logiciel","Téléphone","Assurance","Formation","Sous-traitance","Repas","Loyer","Autre"]},
+};
+const MS=["Jan","Fév","Mar","Avr","Mai","Jun","Jul","Aoû","Sep","Oct","Nov","Déc"];
+const SL={brouillon:"Brouillon",envoyee:"Envoyée",payee:"Payée",en_retard:"En retard",annulee:"Annulée"};
+const uid=()=>Math.random().toString(36).slice(2,10);
+const fmt=n=>new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR"}).format(n);
+const fD=d=>new Date(d).toLocaleDateString("fr-FR");
+const td=()=>new Date().toISOString().slice(0,10);
+const addBD=(d,n)=>{const x=new Date(d);let a=0;while(a<n){x.setDate(x.getDate()+1);if(x.getDay()!==0&&x.getDay()!==6)a++;}return x.toISOString().slice(0,10);};
+const dD=(a,b)=>Math.ceil((new Date(b)-new Date(a))/864e5);
+const pc=(n,t)=>t>0?Math.round(n/t*100):0;
+function ld(k,f){try{return JSON.parse(localStorage.getItem(k))||f;}catch{return f;}}
+function sv(k,d){localStorage.setItem(k,JSON.stringify(d));}
+function Bdg({s}){return <span className={"bdg b-"+s}>{SL[s]}</span>;}
+function Modal({open,onClose,title,children}){if(!open)return null;return(<div className="ov" onClick={onClose}><div className="mdl" onClick={e=>e.stopPropagation()}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}><h3 style={{fontSize:15,fontWeight:700}}>{title}</h3><button onClick={onClose} style={{background:"none",border:"none",fontSize:16,cursor:"pointer",color:"#999"}}>✕</button></div>{children}</div></div>);}
+
+/* ═══════════════════════ LANDING PAGE ═══════════════════════ */
+function Landing(){
+  const [showIOS,setShowIOS]=useState(false);
+  const [deferredPrompt,setDP]=useState(null);
+
+  useEffect(()=>{
+    const h=e=>{e.preventDefault();setDP(e);};
+    window.addEventListener('beforeinstallprompt',h);
+    return()=>window.removeEventListener('beforeinstallprompt',h);
+  },[]);
+
+  const handleInstall=()=>{
+    if(deferredPrompt){
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(()=>setDP(null));
+    } else if(isIOS){
+      setShowIOS(true);
+    } else {
+      setShowIOS(true);
+    }
+  };
+
+  return(<div className="land">
+    <div className="hero">
+      <div className="pill">100% gratuit — aucune inscription</div>
+      <h1>Votre app de compta<br/><span>sur-mesure</span></h1>
+      <p>Installez votre application de comptabilité gratuite. Factures, dépenses, trésorerie, TVA, charges sociales — tout adapté à votre statut et secteur.</p>
+      <button className="inst-btn" onClick={handleInstall}>
+        <span className="icn">{isIOS?"📲":isAndroid?"📲":"💻"}</span>
+        {isIOS?"Installer sur iPhone":isAndroid?"Installer sur Android":"Installer l'application"}
+      </button>
+    </div>
+
+    {showIOS&&<div className="ios-overlay" onClick={()=>setShowIOS(false)}>
+      <div className="ios-box" onClick={e=>e.stopPropagation()}>
+        <div className="ios-arrow">⬆️</div>
+        <h3>Installer ComptaFacile</h3>
+        <div className="ios-steps">
+          <div className="ios-step"><div className="num">1</div><div className="txt">Appuyez sur le bouton <strong>Partager</strong> ⬆️ en bas de Safari</div></div>
+          <div className="ios-step"><div className="num">2</div><div className="txt">Faites défiler et appuyez sur <strong>"Sur l'écran d'accueil"</strong></div></div>
+          <div className="ios-step"><div className="num">3</div><div className="txt">Appuyez sur <strong>Ajouter</strong> en haut à droite</div></div>
+        </div>
+        <p style={{fontSize:12,color:"#94a3b8",marginBottom:12}}>L'app s'ouvrira en plein écran, comme une vraie app !</p>
+        <button className="ios-close" onClick={()=>setShowIOS(false)}>J'ai compris</button>
+      </div>
+    </div>}
+
+    <div className="lsec"><h2>Comment ça marche</h2><p>Rapide, simple, gratuit</p><div className="how">
+      <div className="how-s"><div className="how-n">1</div><div className="how-t">Installez</div><div className="how-d">{isIOS?"Ajoutez sur votre écran d'accueil via Safari":"Installez l'app depuis votre navigateur"}</div></div>
+      <div className="how-s"><div className="how-n">2</div><div className="how-t">Configurez</div><div className="how-d">Choisissez votre statut juridique et votre secteur</div></div>
+      <div className="how-s"><div className="how-n">3</div><div className="how-t">Gérez</div><div className="how-d">Factures, dépenses, trésorerie — tout est prêt</div></div>
+    </div></div>
+
+    <div className="lsec"><h2>Fonctionnalités</h2><div className="feats">
+      <div className="feat"><div className="ic">📄</div><div className="ti">Factures</div><div className="de">Multi-lignes, TVA auto, délais jours ouvrés, alertes retard.</div></div>
+      <div className="feat"><div className="ic">💸</div><div className="ti">Dépenses</div><div className="de">Catégories adaptées à votre métier, répartition visuelle.</div></div>
+      <div className="feat"><div className="ic">📊</div><div className="ti">Dashboard</div><div className="de">CA, charges, bénéfice net, graphique mensuel.</div></div>
+      <div className="feat"><div className="ic">🏦</div><div className="ti">Trésorerie</div><div className="de">Flux mensuel, créances, résultat net.</div></div>
+      <div className="feat"><div className="ic">⚡</div><div className="ti">TVA & Charges</div><div className="de">Calculs auto selon votre statut juridique.</div></div>
+      <div className="feat"><div className="ic">💾</div><div className="ti">100% hors ligne</div><div className="de">Fonctionne sans internet. Données sur votre appareil.</div></div>
+    </div></div>
+
+    <div className="lsec"><h2>9 statuts juridiques</h2><div className="sgrid">{Object.entries(STATUTS).map(([k,v])=>(<div key={k} className="scard"><div className="em">{v.icon}</div><div className="nm">{v.short}</div><div className="ds">{v.desc}</div></div>))}</div></div>
+
+    <div className="ctab"><button className="inst-btn" onClick={handleInstall}><span className="icn">📲</span>Installer gratuitement</button><div className="sub">Gratuit • Sans inscription • Fonctionne hors ligne • Données privées</div></div>
+    <div className="lfooter">ComptaFacile — Comptabilité gratuite pour entrepreneurs français</div>
+  </div>);
+}
+
+/* ═══════════════════════ WIZARD ═══════════════════════ */
+function Wizard({onDone}){
+  const [step,setStep]=useState(0);
+  const [cfg,setCfg]=useState({name:"",statut:"",secteur:""});
+  const ok=step===0?cfg.name.trim()!=="":step===1?cfg.statut!=="":cfg.secteur!=="";
+  const next=()=>{if(step<2)setStep(step+1);else{sv("cf_config",cfg);onDone(cfg);}};
+  return(<div className="wiz"><div className="wc">
+    <div style={{textAlign:"center",marginBottom:16}}><div style={{fontSize:28}}>📊</div><div style={{fontSize:11,color:"#3b82f6",fontWeight:700}}>CONFIGURATION</div></div>
+    <div className="wprog">{[0,1,2].map(i=>(<div key={i} className={`wd ${i<step?"done":i===step?"cur":""}`}/>))}</div>
+    <div className="wlbl">Étape {step+1}/3</div>
+    <div className="wtit">{["Nom de votre entreprise","Votre statut juridique","Votre secteur d'activité"][step]}</div>
+    {step===0&&<input className="winp" placeholder="Ex: Martin & Co..." value={cfg.name} onChange={e=>setCfg({...cfg,name:e.target.value})} autoFocus onKeyDown={e=>e.key==="Enter"&&ok&&next()}/>}
+    {step===1&&<div className="wopts">{Object.entries(STATUTS).map(([k,v])=>(<div key={k} className={`wopt ${cfg.statut===k?"sel":""}`} onClick={()=>setCfg({...cfg,statut:k})}><div className="em">{v.icon}</div><div><div className="ti">{v.label}</div><div className="di">{v.desc}</div></div></div>))}</div>}
+    {step===2&&<div className="wopts">{Object.entries(SECTEURS).map(([k,v])=>(<div key={k} className={`wopt ${cfg.secteur===k?"sel":""}`} onClick={()=>setCfg({...cfg,secteur:k})}><div className="em">{v.icon}</div><div><div className="ti">{v.label}</div><div className="di">{v.cats.slice(0,3).join(", ")}...</div></div></div>))}</div>}
+    <div className="wacts">{step>0?<button className="wbtn wbs" onClick={()=>setStep(step-1)}>← Retour</button>:<div/>}<button className="wbtn wbp" onClick={next} disabled={!ok} style={{opacity:ok?1:.5}}>{step===2?"C'est parti ! →":"Suivant →"}</button></div>
+  </div></div>);
+}
+
+/* ═══════════════════════ ACCOUNTING APP ═══════════════════════ */
+function ComptaApp({cfg,onReset}){
+  const S=STATUTS[cfg.statut]||STATUTS.micro_service;const SEC=SECTEURS[cfg.secteur]||SECTEURS.autre;const CATS=SEC.cats;
+  const chR=S.charges;const tvaSeuil=S.tvaSeuil||0;const tvaR=S.tva||.20;
+  const isMicro=cfg.statut&&cfg.statut.indexOf("micro")===0;
+  const chL=isMicro?"URSSAF":(cfg.statut==="sasu"||cfg.statut==="sas"?"Charges salarié":"Charges TNS");
+  const ini=cfg.name?cfg.name.slice(0,2).toUpperCase():"CF";
+
+  const [tab,setTab]=useState("dash");
+  const [inv,setInv]=useState(()=>ld("cf_inv",[]));const [exp,setExp]=useState(()=>ld("cf_exp",[]));const [cli,setCli]=useState(()=>ld("cf_cli",[]));
+  const [yr,setYr]=useState(new Date().getFullYear());
+  useEffect(()=>{sv("cf_inv",inv);},[inv]);useEffect(()=>{sv("cf_exp",exp);},[exp]);useEffect(()=>{sv("cf_cli",cli);},[cli]);
+  useEffect(()=>{const n=td();setInv(p=>p.map(i=>i.status==="envoyee"&&i.ech&&i.ech<n?{...i,status:"en_retard"}:i));},[tab]);
+
+  const yI=useMemo(()=>inv.filter(i=>i.date&&i.date.startsWith(String(yr))),[inv,yr]);
+  const yE=useMemo(()=>exp.filter(e=>e.date&&e.date.startsWith(String(yr))),[exp,yr]);
+  const caHT=useMemo(()=>yI.filter(i=>i.status!=="annulee").reduce((s,i)=>s+(i.ht||0),0),[yI]);
+  const caE=useMemo(()=>yI.filter(i=>i.status==="payee").reduce((s,i)=>s+(i.ht||0),0),[yI]);
+  const tD=useMemo(()=>yE.reduce((s,e)=>s+(e.mt||0),0),[yE]);
+  const ch=caHT*chR;const ben=caE-tD-(caE*chR);
+  const tvaAct=tvaSeuil>0?caHT>tvaSeuil:true;
+  const enA=useMemo(()=>yI.filter(i=>i.status==="envoyee"||i.status==="en_retard").reduce((s,i)=>s+(i.ht||0),0),[yI]);
+  const nR=useMemo(()=>inv.filter(i=>i.status==="en_retard").length,[inv]);
+  const pTVA=tvaSeuil>0?Math.min((caHT/tvaSeuil)*100,100):100;
+  let isAmt=0;if(S.hasIS){const pr=caHT-tD;if(pr>0)isAmt=pr<=(S.isSeuil||42500)?pr*(S.is1||.15):(S.isSeuil||42500)*(S.is1||.15)+(pr-(S.isSeuil||42500))*(S.is2||.25);}
+  const mC=useMemo(()=>{const m=Array(12).fill(0);yI.filter(i=>i.status!=="annulee").forEach(i=>{m[new Date(i.date).getMonth()]+=i.ht||0;});return m;},[yI]);
+  const mE=useMemo(()=>{const m=Array(12).fill(0);yE.forEach(e=>{m[new Date(e.date).getMonth()]+=e.mt||0;});return m;},[yE]);
+  const mx=Math.max(...mC,...mE,1);
+  const up=useMemo(()=>inv.filter(i=>i.status==="envoyee"||i.status==="en_retard").sort((a,b)=>(a.ech||"").localeCompare(b.ech||"")).slice(0,5),[inv]);
+
+  // Factures
+  const [fSh,fSSh]=useState(false);const [fEId,fSEId]=useState(null);const [fFi,fSFi]=useState("toutes");
+  const fIn={client:"",lignes:[{d:"",q:1,p:0}],delai:"30",date:td(),tva:false};const [fF,fSF]=useState(fIn);
+  const fNew=()=>{fSF({...fIn,tva:tvaAct});fSEId(null);fSSh(true);};
+  const fEdit=i=>{fSF({client:i.client,lignes:i.lignes||[{d:"",q:1,p:i.ht}],delai:String(i.dj||30),date:i.date,tva:i.tvA||false});fSEId(i.id);fSSh(true);};
+  const fSave=()=>{const ht=fF.lignes.reduce((s,l)=>s+l.q*l.p,0);const tv=fF.tva?ht*tvaR:0;const ttc=ht+tv;const dj=parseInt(fF.delai)||30;const ech=addBD(fF.date,dj);if(fEId){setInv(p=>p.map(i=>i.id===fEId?{...i,client:fF.client,lignes:fF.lignes,ht,tv,ttc,tvA:fF.tva,date:fF.date,dj,ech}:i));}else{setInv(p=>[...p,{id:uid(),num:"FAC-"+String(inv.length+1).padStart(4,"0"),client:fF.client,lignes:fF.lignes,ht,tv,ttc,tvA:fF.tva,date:fF.date,dj,ech,status:"brouillon",dp:null}]);}fSSh(false);};
+  const fSt=(id,st)=>setInv(p=>p.map(i=>i.id===id?{...i,status:st,dp:st==="payee"?td():i.dp}:i));
+  const fDel=id=>{if(confirm("Supprimer ?"))setInv(p=>p.filter(i=>i.id!==id));};
+  const fLi=fFi==="toutes"?inv:inv.filter(i=>i.status===fFi);
+  const fHT=fF.lignes.reduce((s,l)=>s+l.q*l.p,0);const fTV=fF.tva?fHT*tvaR:0;
+  const fAL=()=>fSF(f=>({...f,lignes:[...f.lignes,{d:"",q:1,p:0}]}));
+  const fRL=i=>fSF(f=>({...f,lignes:f.lignes.filter((_,j)=>j!==i)}));
+  const fUL=(i,k,v)=>fSF(f=>({...f,lignes:f.lignes.map((l,j)=>j===i?{...l,[k]:v}:l)}));
+
+  // Dépenses
+  const [dSh,dSSh]=useState(false);const [dF,dSF]=useState({desc:"",mt:"",cat:CATS[0],date:td()});
+  const dSave=()=>{setExp(p=>[...p,{id:uid(),desc:dF.desc,mt:Number(dF.mt),cat:dF.cat,date:dF.date}]);dSSh(false);dSF({desc:"",mt:"",cat:CATS[0],date:td()});};
+  const dDel=id=>{if(confirm("Supprimer ?"))setExp(p=>p.filter(e=>e.id!==id));};
+  const bC=useMemo(()=>{const m={};exp.forEach(e=>{m[e.cat]=(m[e.cat]||0)+e.mt;});return Object.entries(m).sort((a,b)=>b[1]-a[1]);},[exp]);
+  const totE=exp.reduce((s,e)=>s+e.mt,0);const mxCat=bC.length>0?bC[0][1]:1;
+
+  // Clients
+  const [cSh,cSSh]=useState(false);const [cF,cSF]=useState({nom:"",email:"",tel:""});
+  const cSave=()=>{setCli(p=>[...p,{id:uid(),...cF}]);cSSh(false);cSF({nom:"",email:"",tel:""});};
+  const cDel=id=>{if(confirm("Supprimer ?"))setCli(p=>p.filter(c=>c.id!==id));};
+  const cSt=useMemo(()=>{const m={};cli.forEach(c=>{const ci=inv.filter(i=>i.client===c.nom);m[c.id]={t:ci.filter(i=>i.status!=="annulee").reduce((s,i)=>s+(i.ht||0),0),p:ci.filter(i=>i.status==="envoyee"||i.status==="en_retard").reduce((s,i)=>s+(i.ht||0),0)};});return m;},[cli,inv]);
+
+  // Trésorerie
+  const paid=yI.filter(i=>i.status==="payee");const unpaid=inv.filter(i=>i.status==="envoyee"||i.status==="en_retard");
+  const mCF=useMemo(()=>MS.map((m,i)=>{const inc=paid.filter(x=>new Date(x.dp||x.date).getMonth()===i).reduce((s,x)=>s+(x.ht||0),0);const ex=yE.filter(e=>new Date(e.date).getMonth()===i).reduce((s,e)=>s+(e.mt||0),0);return{m,inc,ex,net:inc-ex};}),[paid,yE]);
+
+  // Backup
+  const bRef=useRef(null);const [bMsg,bSM]=useState(null);
+  const bEx=()=>{const d={v:"2.0",app:"ComptaFacile",config:cfg,data:{invoices:inv,expenses:exp,clients:cli}};const b=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="sauvegarde-"+cfg.name.replace(/\s/g,"-")+"-"+td().replace(/-/g,"")+".json";document.body.appendChild(a);a.click();document.body.removeChild(a);bSM("ok");setTimeout(()=>bSM(null),4e3);};
+  const bIm=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(!d.data)throw"";if(!confirm("Restaurer ?"))return;setInv(d.data.invoices||[]);setExp(d.data.expenses||[]);setCli(d.data.clients||[]);bSM("ok");}catch{bSM("err");}setTimeout(()=>bSM(null),4e3);};r.readAsText(f);e.target.value="";};
+
+  const TABS=[{id:"dash",l:"Dashboard",i:"📊"},{id:"fac",l:"Factures",i:"📄"},{id:"dep",l:"Dépenses",i:"💸"},{id:"cli",l:"Clients",i:"👥"},{id:"tre",l:"Trésorerie",i:"🏦"},{id:"bak",l:"Sauvegarde",i:"💾"}];
+
+  return(<div className="app">
+    <header className="hd"><div className="hd-l"><div className="hd-logo">{ini}</div><div><div className="hd-t">{cfg.name}</div><div className="hd-s">{S.short} • {SEC.label}</div></div></div><div><select className="yr" value={yr} onChange={e=>setYr(Number(e.target.value))}>{[2024,2025,2026,2027].map(y=><option key={y}>{y}</option>)}</select></div></header>
+    <nav className="nv">{TABS.map(t=>(<button key={t.id} className={"nb"+(tab===t.id?" ac":"")} onClick={()=>setTab(t.id)}>{t.i} {t.l}{t.id==="fac"&&nR>0&&<span className="nbdg">{nR}</span>}</button>))}</nav>
+    <main className="mn">
+
+    {tab==="dash"&&<div>
+      <div className="rw"><div className="cd st"><div className="sl">CA Facturé</div><div className="sv" style={{color:"#3b82f6"}}>{fmt(caHT)}</div><div className="ss">{yI.length} fact.</div></div><div className="cd st"><div className="sl">Encaissé</div><div className="sv" style={{color:"#10b981"}}>{fmt(caE)}</div></div><div className="cd st"><div className="sl">Attente</div><div className="sv" style={{color:nR>0?"#ef4444":"#f59e0b"}}>{fmt(enA)}</div>{nR>0&&<div className="ss" style={{color:"#ef4444"}}>⚠️ {nR} retard</div>}</div><div className="cd st"><div className="sl">Dépenses</div><div className="sv" style={{color:"#ec4899"}}>{fmt(tD)}</div></div></div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:12}}>
+        <div className="cd"><div className="sl">{chL} ({Math.round(chR*100)}%)</div><div style={{fontSize:17,fontWeight:800,color:"#ec4899",margin:"2px 0"}}>{fmt(ch)}</div>{S.hasIS&&<div style={{fontSize:9,color:"#8b5cf6",fontWeight:600}}>IS: {fmt(isAmt)}</div>}<div style={{marginTop:4,fontSize:12,fontWeight:700,color:ben>=0?"#10b981":"#ef4444"}}>Net: {fmt(ben)}</div></div>
+        {tvaSeuil>0?<div className="cd"><div className="sl">Seuil TVA {tvaAct?"⚠️":""}</div><div style={{display:"flex",justifyContent:"space-between",margin:"2px 0 4px"}}><span style={{fontSize:14,fontWeight:800,color:tvaAct?"#ef4444":"#3b82f6"}}>{fmt(caHT)}</span><span style={{fontSize:9,color:"#999"}}>/{fmt(tvaSeuil)}</span></div><div className="progbg"><div className="progfl" style={{width:pTVA+"%",background:tvaAct?"#ef4444":"linear-gradient(90deg,#3b82f6,#8b5cf6)"}}/></div></div>:<div className="cd"><div className="sl">TVA</div><div style={{fontSize:14,fontWeight:800,color:"#8b5cf6"}}>{fmt(caHT*.2)}</div></div>}
+      </div>
+      <div className="cd" style={{marginBottom:12}}><div style={{fontSize:10,fontWeight:700,marginBottom:10}}>Revenus vs Dépenses</div><div className="chart">{MS.map((m,i)=>(<div key={m} className="ccol"><div className="cbars"><div className="cbar" style={{background:"linear-gradient(180deg,#3b82f6,#8b5cf6)",height:(mC[i]/mx)*100+"%",minHeight:mC[i]>0?2:0}}/><div className="cbar" style={{background:"linear-gradient(180deg,#f87171,#ec4899)",height:(mE[i]/mx)*100+"%",minHeight:mE[i]>0?2:0}}/></div><div className="clbl">{m}</div></div>))}</div></div>
+      {up.length>0&&<div className="cd"><div style={{fontSize:10,fontWeight:700,marginBottom:6}}>En attente</div>{up.map(i=>{const dl=dD(td(),i.ech);return(<div key={i.id} className={"prow "+(dl<0?"late":"ok")}><div><div style={{fontWeight:600,fontSize:10}}>{i.num} — {i.client}</div><div style={{fontSize:8,color:"#999"}}>Éch. {fD(i.ech)}</div></div><div style={{textAlign:"right"}}><div style={{fontWeight:700,fontSize:11}}>{fmt(i.ht)}</div><div style={{fontSize:7,color:dl<0?"#ef4444":"#999"}}>{dl<0?Math.abs(dl)+"j retard":dl+"j"}</div></div></div>);})}</div>}
+    </div>}
+
+    {tab==="fac"&&<div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:9,flexWrap:"wrap",gap:4}}><div className="frow">{["toutes","brouillon","envoyee","payee","en_retard","annulee"].map(f=>(<button key={f} className={"fbtn"+(fFi===f?" ac":"")} onClick={()=>fSFi(f)}>{f==="toutes"?"Toutes":SL[f]}</button>))}</div><button className="btn bp" onClick={fNew}>+ Facture</button></div>
+      {tvaAct&&tvaSeuil>0&&<div className="warn">⚠️ Seuil TVA dépassé</div>}
+      {fLi.length===0?<div className="cd empty"><div className="emptyi">📄</div>Aucune facture</div>:fLi.sort((a,b)=>(b.date||"").localeCompare(a.date||"")).map(i=>(<div key={i.id} className="cd" style={{padding:"9px 14px",marginBottom:5}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:3}}><div style={{flex:1,minWidth:120}}><div><span style={{fontWeight:800,fontSize:11}}>{i.num}</span><Bdg s={i.status}/></div><div style={{fontSize:9,color:"#666"}}>{i.client}</div><div style={{fontSize:8,color:"#999"}}>{fD(i.date)} • {i.dj}j{i.tvA?" • TVA":""}</div></div><div style={{textAlign:"right"}}><div style={{fontSize:15,fontWeight:800}}>{fmt(i.ttc||i.ht)}</div>{i.tvA&&<div style={{fontSize:8,color:"#999"}}>HT:{fmt(i.ht)}</div>}</div></div><div style={{display:"flex",gap:3,marginTop:4,flexWrap:"wrap"}}>{i.status==="brouillon"&&<button className="btn bse bsm" onClick={()=>fSt(i.id,"envoyee")}>📤</button>}{(i.status==="envoyee"||i.status==="en_retard")&&<button className="btn bg bsm" onClick={()=>fSt(i.id,"payee")}>✅</button>}{i.status!=="annulee"&&i.status!=="payee"&&<button className="btn bse bsm" onClick={()=>fSt(i.id,"annulee")}>🚫</button>}<button className="btn bse bsm" onClick={()=>fEdit(i)}>✏️</button><button className="btn bd bsm" onClick={()=>fDel(i.id)}>🗑</button></div></div>))}
+      <Modal open={fSh} onClose={()=>fSSh(false)} title={fEId?"Modifier":"Nouvelle facture"}>
+        <div className="f2"><div className="fg">{cli.length>0?<><label className="fl">Client</label><select className="fsl" value={fF.client} onChange={e=>fSF(f=>({...f,client:e.target.value}))}><option value="">—</option>{cli.map(c=><option key={c.id} value={c.nom}>{c.nom}</option>)}</select></>:<><label className="fl">Client</label><input className="fi" value={fF.client} onChange={e=>fSF(f=>({...f,client:e.target.value}))}/></>}</div><div className="fg"><label className="fl">Date</label><input className="fi" type="date" value={fF.date} onChange={e=>fSF(f=>({...f,date:e.target.value}))}/></div></div>
+        <div className="f2"><div className="fg"><label className="fl">Délai</label><select className="fsl" value={fF.delai} onChange={e=>fSF(f=>({...f,delai:e.target.value}))}><option value="0">Comptant</option><option value="15">15j</option><option value="30">30j</option><option value="45">45j</option><option value="60">60j</option></select></div><div style={{display:"flex",alignItems:"center",gap:4,paddingTop:12}}><input type="checkbox" checked={fF.tva} onChange={e=>fSF(f=>({...f,tva:e.target.checked}))}/><span style={{fontSize:10,fontWeight:600}}>TVA {Math.round(tvaR*100)}%</span></div></div>
+        <div className="fg"><label className="fl">Lignes</label>{fF.lignes.map((l,i)=>(<div key={i} className="lrow"><input className="linp" style={{flex:3}} placeholder="Desc" value={l.d} onChange={e=>fUL(i,"d",e.target.value)}/><input className="linp" style={{flex:1,textAlign:"center"}} type="number" value={l.q} onChange={e=>fUL(i,"q",Number(e.target.value))} min="1"/><input className="linp" style={{flex:1,textAlign:"right"}} type="number" placeholder="PU" value={l.p||""} onChange={e=>fUL(i,"p",Number(e.target.value))} min="0" step=".01"/><span style={{flex:1,fontSize:9,fontWeight:700,textAlign:"right"}}>{fmt(l.q*l.p)}</span>{fF.lignes.length>1&&<button style={{background:"none",border:"none",color:"#ef4444",cursor:"pointer"}} onClick={()=>fRL(i)}>✕</button>}</div>))}<button className="addl" onClick={fAL}>+ Ligne</button></div>
+        <div className="tbox"><div style={{display:"flex",justifyContent:"space-between",fontSize:10}}><span>HT</span><span style={{fontWeight:700}}>{fmt(fHT)}</span></div>{fF.tva&&<div style={{display:"flex",justifyContent:"space-between",fontSize:10}}><span>TVA</span><span style={{fontWeight:700}}>{fmt(fTV)}</span></div>}<div style={{display:"flex",justifyContent:"space-between",fontSize:13,fontWeight:800,marginTop:3,paddingTop:3,borderTop:"1px solid #e5e7eb"}}><span>TTC</span><span>{fmt(fHT+fTV)}</span></div></div>
+        <div className="fac"><button className="btn bse" onClick={()=>fSSh(false)}>Annuler</button><button className="btn bp" onClick={fSave} disabled={!fF.client||fHT<=0}>OK</button></div>
+      </Modal>
+    </div>}
+
+    {tab==="dep"&&<div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:9}}><div style={{fontSize:9,color:"#999"}}>Total: <strong style={{color:"#ec4899",fontSize:12}}>{fmt(totE)}</strong></div><button className="btn bp" onClick={()=>dSSh(true)}>+ Dépense</button></div>
+      {bC.length>0&&<div className="cd" style={{marginBottom:9}}><div style={{fontSize:10,fontWeight:700,marginBottom:6}}>Catégories</div>{bC.map(([c,v])=>(<div key={c} style={{marginBottom:4}}><div style={{display:"flex",justifyContent:"space-between",fontSize:9,marginBottom:1}}><span style={{fontWeight:600}}>{c}</span><span style={{color:"#666"}}>{fmt(v)} ({pc(v,totE)}%)</span></div><div className="barbg"><div className="barfl" style={{width:(v/mxCat)*100+"%"}}/></div></div>))}</div>}
+      {exp.length===0?<div className="cd empty"><div className="emptyi">💸</div>Aucune</div>:exp.sort((a,b)=>(b.date||"").localeCompare(a.date||"")).map(e=>(<div key={e.id} className="cd" style={{padding:"7px 12px",marginBottom:3}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontWeight:700,fontSize:10}}>{e.desc}</div><div style={{fontSize:8,color:"#999"}}>{fD(e.date)} • {e.cat}</div></div><div style={{display:"flex",alignItems:"center",gap:5}}><span style={{fontWeight:800,fontSize:11,color:"#ec4899"}}>-{fmt(e.mt)}</span><button className="del" onClick={()=>dDel(e.id)}>🗑</button></div></div></div>))}
+      <Modal open={dSh} onClose={()=>dSSh(false)} title="Nouvelle dépense"><div className="fg"><label className="fl">Description</label><input className="fi" value={dF.desc} onChange={e=>dSF(f=>({...f,desc:e.target.value}))}/></div><div className="f2"><div className="fg"><label className="fl">Montant €</label><input className="fi" type="number" value={dF.mt} onChange={e=>dSF(f=>({...f,mt:e.target.value}))} min="0" step=".01"/></div><div className="fg"><label className="fl">Date</label><input className="fi" type="date" value={dF.date} onChange={e=>dSF(f=>({...f,date:e.target.value}))}/></div></div><div className="fg"><label className="fl">Catégorie</label><select className="fsl" value={dF.cat} onChange={e=>dSF(f=>({...f,cat:e.target.value}))}>{CATS.map(c=><option key={c}>{c}</option>)}</select></div><div className="fac"><button className="btn bse" onClick={()=>dSSh(false)}>Annuler</button><button className="btn bp" onClick={dSave} disabled={!dF.desc||!dF.mt}>OK</button></div></Modal>
+    </div>}
+
+    {tab==="cli"&&<div>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:9}}><span style={{fontSize:9,color:"#999"}}>{cli.length} client(s)</span><button className="btn bp" onClick={()=>cSSh(true)}>+ Client</button></div>
+      {cli.length===0?<div className="cd empty"><div className="emptyi">👥</div>Aucun</div>:<div className="cgrid">{cli.map(c=>{const cs=cSt[c.id]||{};return(<div key={c.id} className="cd"><div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}><div><div style={{fontWeight:800,fontSize:12}}>{c.nom}</div>{c.email&&<div style={{fontSize:8,color:"#999"}}>{c.email}</div>}</div><button className="del" onClick={()=>cDel(c.id)}>🗑</button></div><div className="cst"><div className="csb"><div style={{color:"#999",fontSize:7}}>Facturé</div><div style={{fontWeight:700,fontSize:10,color:"#3b82f6"}}>{fmt(cs.t||0)}</div></div><div className="csb"><div style={{color:"#999",fontSize:7}}>Attente</div><div style={{fontWeight:700,fontSize:10,color:"#f59e0b"}}>{fmt(cs.p||0)}</div></div></div></div>);})}</div>}
+      <Modal open={cSh} onClose={()=>cSSh(false)} title="Nouveau client"><div className="fg"><label className="fl">Nom</label><input className="fi" value={cF.nom} onChange={e=>cSF(f=>({...f,nom:e.target.value}))}/></div><div className="f2"><div className="fg"><label className="fl">Email</label><input className="fi" value={cF.email} onChange={e=>cSF(f=>({...f,email:e.target.value}))}/></div><div className="fg"><label className="fl">Tél</label><input className="fi" value={cF.tel} onChange={e=>cSF(f=>({...f,tel:e.target.value}))}/></div></div><div className="fac"><button className="btn bse" onClick={()=>cSSh(false)}>Annuler</button><button className="btn bp" onClick={cSave} disabled={!cF.nom}>OK</button></div></Modal>
+    </div>}
+
+    {tab==="tre"&&<div>
+      <div className="rw"><div className="cd st"><div className="sl">Encaissé</div><div className="sv" style={{color:"#10b981"}}>{fmt(caE)}</div></div><div className="cd st"><div className="sl">Attente</div><div className="sv" style={{color:"#f59e0b"}}>{fmt(enA)}</div></div><div className="cd st"><div className="sl">Dépenses</div><div className="sv" style={{color:"#ec4899"}}>{fmt(tD)}</div></div><div className="cd st"><div className="sl">{chL}</div><div className="sv" style={{color:"#8b5cf6"}}>{fmt(ch)}</div></div></div>
+      <div className="cd" style={{textAlign:"center",marginBottom:12,padding:14,background:ben>=0?"linear-gradient(135deg,#d1fae5,#a7f3d0)":"linear-gradient(135deg,#fee2e2,#fecaca)"}}><div style={{fontSize:9,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:ben>=0?"#065f46":"#991b1b"}}>Résultat net</div><div style={{fontSize:22,fontWeight:800,color:ben>=0?"#065f46":"#991b1b"}}>{fmt(ben)}</div></div>
+      <div className="cd" style={{marginBottom:12}}><div style={{fontSize:10,fontWeight:700,marginBottom:6}}>Flux mensuel</div><table className="tbl"><thead><tr><th style={{textAlign:"left"}}>Mois</th><th style={{color:"#10b981"}}>In</th><th style={{color:"#ec4899"}}>Out</th><th>Net</th></tr></thead><tbody>{mCF.map((r,i)=>(<tr key={i}><td>{r.m}</td><td style={{color:"#10b981",fontWeight:600}}>{r.inc>0?fmt(r.inc):"—"}</td><td style={{color:"#ec4899",fontWeight:600}}>{r.ex>0?fmt(r.ex):"—"}</td><td style={{fontWeight:700,color:r.net>=0?"#10b981":"#ef4444"}}>{r.inc||r.ex?fmt(r.net):"—"}</td></tr>))}</tbody></table></div>
+      {unpaid.length>0&&<div className="cd"><div style={{fontSize:10,fontWeight:700,marginBottom:6}}>Créances</div>{unpaid.sort((a,b)=>(a.ech||"").localeCompare(b.ech||"")).map(i=>{const dl=dD(td(),i.ech);return(<div key={i.id} className={"prow "+(dl<0?"late":"ok")}><div><span style={{fontWeight:700,fontSize:10}}>{i.num}</span> <span style={{color:"#666",fontSize:9}}>{i.client}</span><Bdg s={i.status}/></div><div style={{textAlign:"right"}}><div style={{fontWeight:700,fontSize:10}}>{fmt(i.ht)}</div><div style={{fontSize:7,color:dl<0?"#ef4444":"#999"}}>{dl<0?Math.abs(dl)+"j retard":fD(i.ech)}</div></div></div>);})}</div>}
+    </div>}
+
+    {tab==="bak"&&<div>
+      <div className="bkg"><div className="cd bkc"><div style={{fontSize:26,marginBottom:4}}>💾</div><div style={{fontSize:12,fontWeight:800,marginBottom:6}}>Exporter</div><button className="btn bp" onClick={bEx} style={{width:"100%",justifyContent:"center"}}>⬇️ Sauvegarder</button></div><div className="cd bkc"><div style={{fontSize:26,marginBottom:4}}>📂</div><div style={{fontSize:12,fontWeight:800,marginBottom:6}}>Restaurer</div><input type="file" accept=".json" style={{display:"none"}} ref={bRef} onChange={bIm}/><button className="btn bg" onClick={()=>bRef.current.click()} style={{width:"100%",justifyContent:"center"}}>⬆️ Charger</button></div></div>
+      {bMsg&&<div style={{background:bMsg==="ok"?"#d1fae5":"#fee2e2",color:bMsg==="ok"?"#065f46":"#991b1b",padding:"6px 10px",borderRadius:7,fontSize:10,fontWeight:600,marginBottom:8}}>{bMsg==="ok"?"OK ✅":"Erreur"}</div>}
+      <div className="cd" style={{marginBottom:10}}>{[["Entreprise",cfg.name],["Statut",S.label],["Secteur",SEC.label],["Données",inv.length+" fact. • "+exp.length+" dép. • "+cli.length+" cli."]].map(([l,v])=>(<div key={l} style={{display:"flex",justifyContent:"space-between",padding:"4px 7px",background:"#f8fafc",borderRadius:5,fontSize:9,marginBottom:2}}><span style={{color:"#666"}}>{l}</span><span style={{fontWeight:700}}>{v}</span></div>))}</div>
+      <div className="cd" style={{border:"1.5px solid #ef4444",background:"#fffafa"}}><div style={{fontSize:10,fontWeight:700,color:"#ef4444",marginBottom:4}}>Zone danger</div><button className="btn bse bsm" onClick={onReset}>🔄 Reconfigurer</button> <button className="btn bd bsm" onClick={()=>{if(confirm("Supprimer TOUTES les données ?")){setInv([]);setExp([]);setCli([]);}}}>🗑 Tout effacer</button></div>
+    </div>}
+
+    </main>
+  </div>);
+}
+
+/* ═══════════════════════ ROOT ═══════════════════════ */
+function Root(){
+  const [page,setPage]=useState("loading");
+  const [cfg,setCfg]=useState(null);
+
+  useEffect(()=>{
+    const saved=ld("cf_config",null);
+    if(isStandalone){
+      // Installed as app
+      if(saved&&saved.name&&saved.statut&&saved.secteur){setCfg(saved);setPage("app");}
+      else setPage("wiz");
+    } else {
+      // In browser = landing page
+      if(saved&&saved.name&&saved.statut&&saved.secteur){setCfg(saved);setPage("app");}
+      else setPage("land");
+    }
+  },[]);
+
+  const onReset=()=>{if(confirm("Reconfigurer ?")){localStorage.removeItem("cf_config");setPage("wiz");}};
+
+  if(page==="loading") return <div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#0a0f1c"}}><div style={{fontSize:32}}>📊</div></div>;
+  if(page==="land") return <Landing/>;
+  if(page==="wiz") return <Wizard onDone={c=>{setCfg(c);setPage("app");}}/>;
+  if(page==="app"&&cfg) return <ComptaApp cfg={cfg} onReset={onReset}/>;
+  return null;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<Root/>);
+</script>
+</body>
+</html>
